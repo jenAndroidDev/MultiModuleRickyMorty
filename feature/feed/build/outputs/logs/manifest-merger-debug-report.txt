@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml:2:13-83
+INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml:2:13-83
+	package
+		INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml
+	xmlns:android
+		ADDED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml:2:23-81
+uses-sdk
+INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml reason: use-sdk injection requested
+INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml
+INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml
+	android:targetSdkVersion
+		INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml
+	android:minSdkVersion
+		INJECTED from /Users/jeninjoseph/AndroidStudioProjects/MultiModuleRickyMorty/feature/feed/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2697821279625689335.xml

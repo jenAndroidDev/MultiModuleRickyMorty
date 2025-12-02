@@ -1,0 +1,36 @@
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "MultiModuleRickyMorty"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+include(":app")
+include(":core")
+include(":core:RMWorldNetwork")
+include(":core:designsystem")
+include(":core:common")
+include(":feature")
+include(":feature:detail")
+include(":feature:feed")
+include(":feature:home")
+include(":feature:home:data")
+include(":feature:home:domain")
+include(":feature:home:presentation")
+ 
