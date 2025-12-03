@@ -1,1 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.feature.home.presentation.HomeViewModel
