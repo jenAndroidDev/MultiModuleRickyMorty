@@ -34,4 +34,6 @@ include(":feature:home:domain")
 include(":feature:home:presentation")
 include(":feature:detail")
 include(":feature:detail:presentation")
+include(":feature:detail:domain")
+include(":feature:detail:data")
  
