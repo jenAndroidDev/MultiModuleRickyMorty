@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import com.example.multimodulerickymorty.navigation.rememberRMWorldState
 import com.example.multimodulerickymorty.ui.theme.MultiModuleRickyMortyTheme
 import com.feature.home.presentation.navigation.HOME_ROUTE
+import com.mmd.feature.presentation.navigation.DETAIL_ROUTE
 import dagger.hilt.android.AndroidEntryPoint
 import theme.RickAndMortyTheme
 
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RickAndMortyTheme {
                 val appState = rememberRMWorldState()
-                RMWorldApp(appState, startDestination = HOME_ROUTE)
+                RMWorldApp(appState, startDestination = DETAIL_ROUTE)
             }
         }
     }

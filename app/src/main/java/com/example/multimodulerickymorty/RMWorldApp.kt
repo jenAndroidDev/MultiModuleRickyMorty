@@ -16,6 +16,7 @@ import com.example.multimodulerickymorty.navigation.RMWorldState
 import com.example.multimodulerickymorty.navigation.TopLevelDestinations
 import components.RMWorldBarItem
 import components.RMWorldNavigationBar
+import theme.RickAndMortyTheme
 
 private const val Tag = "RMWorldApp"
 @Composable
@@ -38,7 +39,9 @@ internal fun RMWorld(
     startDestination: String = "",
     variance: String = "Default",
 ) {
-    Scaffold(bottomBar = {
+    Scaffold(
+        containerColor = RickAndMortyTheme.colors.background,
+        bottomBar = {
         RMWorldBottomBar(
             destinations = appState.topLevelDestinations,
             currentDestination = appState.currentDestination,
