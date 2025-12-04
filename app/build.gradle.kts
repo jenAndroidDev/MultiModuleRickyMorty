@@ -65,10 +65,11 @@ dependencies {
     implementation(projects.core.designsystem)
     //projects features
     implementation(projects.feature.feed)
-    implementation(projects.feature.detail)
     implementation(projects.feature.home.presentation)
     implementation(projects.feature.home.domain)
     implementation(projects.feature.home.data)
+    implementation(projects.feature.detail.presentation)
+    //test
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

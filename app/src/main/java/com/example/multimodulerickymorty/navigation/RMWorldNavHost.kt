@@ -4,9 +4,9 @@ package com.example.multimodulerickymorty.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.feature.detail.navigation.detailScreen
 import com.feature.feed.navigation.feedScreen
 import com.feature.home.presentation.navigation.homeScreen
+import com.mmd.feature.presentation.navigation.detailScreen
 
 /*
 * All */

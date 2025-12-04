@@ -2,10 +2,11 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.feature.detail"
+    namespace = "com.feature.detail.presentation"
     compileSdk = 36
 
     buildFeatures {
@@ -19,7 +20,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
+    buildTypes{
+        debug { isMinifyEnabled = false }
+    }
 }
 dependencies{
     implementation(platform(libs.androidx.compose.bom))
@@ -30,13 +36,22 @@ dependencies{
     implementation(libs.androidx.foundation)
     // or only import the main APIs for the underlying toolkit systems,
     // such as input and measurement/layout
-    implementation("androidx.compose.ui:ui")
-
-    implementation(projects.core.rmWorldNetwork)
+    implementation(libs.ui)
     implementation(libs.androidx.navigation)
+    implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
+    ksp(libs.hilt.android.compiler)
+
+    //core
+    implementation(projects.feature.home.domain)
+    implementation(projects.core.common)
+    implementation(projects.core.designsystem)
+    //coil for image loading
+    implementation(libs.coil.compose)
+
 
     // Android Studio Preview support
     implementation(libs.ui.tooling.preview)
     debugImplementation(libs.ui.tooling)
+
 }

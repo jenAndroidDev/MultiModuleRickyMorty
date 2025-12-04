@@ -56,7 +56,7 @@ fun HomeScreen(
     val feedState by viewModel.uiState.collectAsStateWithLifecycle()
     Log.d("HomeScreen", "HomeScreen() called with: viewModel = ${feedState.data.size}")
     Column(modifier = Modifier.fillMaxSize()
-        .background(color = RickAndMortyTheme.colors.background)
+        //.background(color = RickAndMortyTheme.colors.background)
         .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,) {
         LazyColumn() {

@@ -1,9 +1,9 @@
-package com.feature.detail.navigation
+package com.mmd.feature.presentation.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.feature.detail.DetailRoute
+import com.mmd.feature.presentation.DetailRoute
 
 const val DETAIL_ROUTE = "detail_route"
 
@@ -16,3 +16,4 @@ fun NavGraphBuilder.detailScreen(){
         DetailRoute()
     }
 }
+
