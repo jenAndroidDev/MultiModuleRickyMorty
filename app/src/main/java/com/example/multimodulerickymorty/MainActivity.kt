@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RickAndMortyTheme {
                 val appState = rememberRMWorldState()
-                RMWorldApp(appState, startDestination = DETAIL_ROUTE)
+                RMWorldApp(appState, startDestination = HOME_ROUTE)
             }
         }
     }
