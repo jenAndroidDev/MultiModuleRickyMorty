@@ -1,6 +1,5 @@
 package com.feature.home.presentation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -23,8 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,30 +65,10 @@ fun HomeScreen(
         action.invoke(HomeUiAction.ResetNav)
     }
     val isLoading = feedState.loadState is LoadState.Loading
-    RickAndMortyContent(uiState = feedState, isLoading = isLoading, action = action)
-    Log.d("HomeScreen", "HomeScreen() called with: viewModel = ${feedState.loadState is LoadState.NotLoading}")
-    /*Column(modifier = Modifier.fillMaxSize()
-        .statusBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,) {
-        LazyColumn {
-            items(count = feedState.data.size){it->
-                RickAndMortyCharacterCard(
-                    character = feedState.data[it],
-                    action = action,
-                    isLoading = feedState.loadState is LoadState.Loading
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-
-            }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    }*/
+    RickyAndMortyCharacterContent(uiState = feedState, isLoading = isLoading, action = action)
 }
-
 @Composable
-fun RickAndMortyContent(
+private fun RickyAndMortyCharacterContent(
     uiState: HomeUiState,
     isLoading: Boolean,
     action: (HomeUiAction)-> Unit = {}
@@ -102,12 +79,9 @@ fun RickAndMortyContent(
         .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,) {
         LazyColumn {
-            // If it's loading AND there's no data yet, show shimmers
             if (isLoading && uiState.data.isEmpty()) {
-                // Display a fixed number of shimmer placeholders
                 items(10) {
                     RickAndMortyCharacterCard(
-                        // Pass a dummy object, it won't be used
                         character = Character(
                             name = "Calypso",
                             status = "Dead",
@@ -117,7 +91,7 @@ fun RickAndMortyContent(
                             image = "",
                         ),
                         action = action,
-                        isLoading = true // Force the shimmer to show
+                        isLoading = true
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -133,13 +107,10 @@ fun RickAndMortyContent(
             }
         }
     }
-
 }
 
-
-
 @Composable
-fun RickAndMortyCharacterCard(
+private fun RickAndMortyCharacterCard(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
     character: Character,
@@ -241,7 +212,7 @@ fun RickAndMortyCharacterCard(
 
 @Preview
 @Composable
-fun RickAndMortyCharacterCardPreview() {
+private fun RickAndMortyCharacterCardPreview() {
     RickAndMortyTheme {
         RickAndMortyCharacterCard(
             character = Character(
