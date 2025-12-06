@@ -26,7 +26,12 @@ fun RMWorldShimmerPlaceholder(
 
 }
 @Composable
-fun Modifier.shimmer(cornerRadius: Dp = 0.dp): Modifier {
+fun Modifier.shimmer(
+    cornerRadius: Dp = 0.dp,
+    isLoading: Boolean = false
+): Modifier {
+
+    if (isLoading) this.shimmer(cornerRadius = cornerRadius) else this
     val shimmerColors = listOf(
         Color.LightGray.copy(alpha = 0.3f),
         Color.White.copy(alpha = 0.6f),
