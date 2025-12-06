@@ -20,9 +20,9 @@ public sealed class LoadState(
             return endOfPaginationReached.hashCode()
         }
 
-        internal companion object {
-            internal val Complete = NotLoading(endOfPaginationReached = true)
-            internal val InComplete = NotLoading(endOfPaginationReached = false)
+         companion object {
+             val Complete = NotLoading(endOfPaginationReached = true)
+             val InComplete = NotLoading(endOfPaginationReached = false)
         }
     }
 

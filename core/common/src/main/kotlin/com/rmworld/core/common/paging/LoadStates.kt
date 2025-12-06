@@ -16,7 +16,7 @@ public data class LoadStates(
         op(LoadType.ACTION, action)
     }
 
-    internal fun modifyState(loadType: LoadType, newState: LoadState): LoadStates {
+     fun modifyState(loadType: LoadType, newState: LoadState): LoadStates {
         return when (loadType) {
             LoadType.REFRESH -> copy(
                 refresh = newState
@@ -40,7 +40,7 @@ public data class LoadStates(
         LoadType.ACTION -> action
     }
 
-    internal companion object {
+     companion object {
         val IDLE = LoadStates(
             refresh = LoadState.NotLoading.InComplete,
             prepend = LoadState.NotLoading.InComplete,
