@@ -17,13 +17,14 @@ import com.example.multimodulerickymorty.navigation.TopLevelDestinations
 import components.RMWorldBarItem
 import components.RMWorldNavigationBar
 import theme.RickAndMortyTheme
+import kotlin.reflect.KClass
 
 private const val Tag = "RMWorldApp"
 @Composable
 fun RMWorldApp(
     appState: RMWorldState,
     modifier: Modifier = Modifier,
-    startDestination:String = ""
+    startDestination: KClass<*>
     ){
     RMWorld(
         appState = appState,
@@ -36,7 +37,7 @@ fun RMWorldApp(
 internal fun RMWorld(
     appState: RMWorldState,
     modifier: Modifier,
-    startDestination: String = "",
+    startDestination: KClass<*>,
     variance: String = "Default",
 ) {
     Scaffold(

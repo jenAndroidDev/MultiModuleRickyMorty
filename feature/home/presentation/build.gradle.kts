@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -41,6 +42,8 @@ dependencies{
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     ksp(libs.hilt.android.compiler)
+
+    implementation(libs.kotlinx.serialization.json)
 
     //core
     implementation(projects.feature.home.domain)
