@@ -28,8 +28,32 @@ class HomeViewModel  @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = HomeUiState()
     )
+    val action:(HomeUiAction)-> Unit
     init {
         getAllCharacters()
+        action = {
+            onUiAction(it)
+        }
+    }
+    private fun onUiAction(action: HomeUiAction){
+        when(action){
+            is HomeUiAction.NavigateToDetailScreen->{
+                _uiState.update {
+                    it.copy(
+                        shouldNavToDetailScreen = true,
+                        selectedId = action.id
+                    )
+                }
+            }
+            is HomeUiAction.ResetNav->{
+                _uiState.update {
+                    it.copy(
+                        shouldNavToDetailScreen = false,
+                        selectedId = 0
+                    )
+                }
+            }
+        }
     }
     private fun getAllCharacters(){
         viewModelScope.launch {
@@ -59,5 +83,11 @@ class HomeViewModel  @Inject constructor(
 }
 
 data class HomeUiState(
-    val data: List<Character> = emptyList()
+    val data: List<Character> = emptyList(),
+    val shouldNavToDetailScreen: Boolean  = false,
+    val selectedId:Int = 0
 )
+sealed interface HomeUiAction{
+    data class NavigateToDetailScreen(val id: Int): HomeUiAction
+    data object ResetNav: HomeUiAction
+}

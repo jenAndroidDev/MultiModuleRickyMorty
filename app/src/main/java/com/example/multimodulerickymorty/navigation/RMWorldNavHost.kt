@@ -1,12 +1,14 @@
 package com.example.multimodulerickymorty.navigation
 
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.feature.feed.navigation.feedScreen
 import com.feature.home.presentation.navigation.homeScreen
 import com.mmd.feature.presentation.navigation.detailScreen
+import com.mmd.feature.presentation.navigation.navigateToDetailScreen
 
 /*
 * All */
@@ -25,7 +27,10 @@ fun RMWorldNavHost(
         modifier = modifier){
         feedScreen()
         detailScreen()
-        homeScreen()
+        homeScreen{characterId->
+            Log.d(Tag, "RMWorldNavHost() called with: characterId = $characterId")
+            navController.navigateToDetailScreen()
+        }
     }
 
 }
