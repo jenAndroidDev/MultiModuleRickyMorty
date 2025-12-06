@@ -2,7 +2,7 @@ package com.feature.home.presentation
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,27 +42,35 @@ import theme.RickAndMortyTheme
 
 @Composable
 internal fun HomeRoute(
-    backStackEntry: NavBackStackEntry
+    backStackEntry: NavBackStackEntry,
+    onCharacterClicked:(Int)->Unit
 ){
     HomeScreen(
         viewModel = hiltViewModel(backStackEntry)
-    )
+    ){characterId->
+      onCharacterClicked.invoke(characterId)
+    }
 }
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    action: (HomeUiAction)-> Unit = viewModel.action,
+    onCharacterClicked:(Int)-> Unit
 ){
     val feedState by viewModel.uiState.collectAsStateWithLifecycle()
+    if (feedState.shouldNavToDetailScreen){
+        onCharacterClicked.invoke(feedState.selectedId)
+    }
     Log.d("HomeScreen", "HomeScreen() called with: viewModel = ${feedState.data.size}")
     Column(modifier = Modifier.fillMaxSize()
-        //.background(color = RickAndMortyTheme.colors.background)
         .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,) {
-        LazyColumn() {
+        LazyColumn {
             items(count = feedState.data.size){it->
                 RickAndMortyCharacterCard(
-                    character = feedState.data[it]
+                    character = feedState.data[it],
+                    action = action
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -79,11 +87,15 @@ fun HomeScreen(
 @Composable
 fun RickAndMortyCharacterCard(
     modifier: Modifier = Modifier,
-    character: Character
+    character: Character,
+    action: (HomeUiAction)-> Unit = {}
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable{
+                action(HomeUiAction.NavigateToDetailScreen(character.id))
+            }
             .height(160.dp)
             .background(Color(0xFF3C3E44), shape = RoundedCornerShape(12.dp)),
         verticalAlignment = Alignment.CenterVertically
