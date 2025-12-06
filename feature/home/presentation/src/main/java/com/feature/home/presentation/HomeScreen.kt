@@ -23,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +40,8 @@ import coil.compose.AsyncImage
 import com.feature.home.domain.model.Character
 import com.feature.home.domain.model.Location
 import com.feature.home.domain.model.Origin
+import com.rmworld.core.common.paging.LoadState
+import components.shimmer
 import theme.RickAndMortyTheme
 
 @Composable
@@ -63,15 +67,18 @@ fun HomeScreen(
         onCharacterClicked.invoke(feedState.selectedId)
         action.invoke(HomeUiAction.ResetNav)
     }
-    Log.d("HomeScreen", "HomeScreen() called with: viewModel = ${feedState.data.size}")
-    Column(modifier = Modifier.fillMaxSize()
+    val isLoading = feedState.loadState is LoadState.Loading
+    RickAndMortyContent(uiState = feedState, isLoading = isLoading, action = action)
+    Log.d("HomeScreen", "HomeScreen() called with: viewModel = ${feedState.loadState is LoadState.NotLoading}")
+    /*Column(modifier = Modifier.fillMaxSize()
         .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,) {
         LazyColumn {
             items(count = feedState.data.size){it->
                 RickAndMortyCharacterCard(
                     character = feedState.data[it],
-                    action = action
+                    action = action,
+                    isLoading = feedState.loadState is LoadState.Loading
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -80,7 +87,53 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+    }*/
+}
+
+@Composable
+fun RickAndMortyContent(
+    uiState: HomeUiState,
+    isLoading: Boolean,
+    action: (HomeUiAction)-> Unit = {}
+){
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .statusBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally,) {
+        LazyColumn {
+            // If it's loading AND there's no data yet, show shimmers
+            if (isLoading && uiState.data.isEmpty()) {
+                // Display a fixed number of shimmer placeholders
+                items(10) {
+                    RickAndMortyCharacterCard(
+                        // Pass a dummy object, it won't be used
+                        character = Character(
+                            name = "Calypso",
+                            status = "Dead",
+                            species = "Human",
+                            location = Location(name = "unknown", url = ""),
+                            origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
+                            image = "",
+                        ),
+                        action = action,
+                        isLoading = true // Force the shimmer to show
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            } else {
+                items(count = uiState.data.size) { index ->
+                    RickAndMortyCharacterCard(
+                        character = uiState.data[index],
+                        action = action,
+                        isLoading = false
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
     }
+
 }
 
 
@@ -88,93 +141,103 @@ fun HomeScreen(
 @Composable
 fun RickAndMortyCharacterCard(
     modifier: Modifier = Modifier,
+    isLoading: Boolean,
     character: Character,
     action: (HomeUiAction)-> Unit = {}
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable{
-                action(HomeUiAction.NavigateToDetailScreen(character.id))
-            }
-            .height(160.dp)
-            .background(Color(0xFF3C3E44), shape = RoundedCornerShape(12.dp)),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AsyncImage(
-            model = character.image,
-            contentDescription = character.name,
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp))
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(horizontal = 12.dp, vertical = 8.dp)
-        ) {
-            Text(
-                text = character.name,
-                fontWeight = FontWeight.Bold,
-                color = RickAndMortyTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+       if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .shimmer(isLoading = true, cornerRadius = 12.dp) // isLoading is always true here
             )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val statusColor = when (character.status) {
-                    "Alive" -> Color.Green
-                    "Dead" -> Color.Red
-                    else -> Color.Gray
-                }
-                Box(
+        } else {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        action(HomeUiAction.NavigateToDetailScreen(character.id))
+                    }
+                    .height(160.dp)
+                    .background(Color(0xFF3C3E44), shape = RoundedCornerShape(12.dp)),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AsyncImage(
+                    model = character.image,
+                    contentDescription = character.name,
                     modifier = Modifier
-                        .size(8.dp)
-                        .background(statusColor, shape = CircleShape)
+                        .fillMaxHeight()
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp))
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = "${character.status} - ${character.species}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White
-                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                ) {
+                    Text(
+                        text = character.name,
+                        fontWeight = FontWeight.Bold,
+                        color = RickAndMortyTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        val statusColor = when (character.status) {
+                            "Alive" -> Color.Green
+                            "Dead" -> Color.Red
+                            else -> Color.Gray
+                        }
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .background(statusColor, shape = CircleShape)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "${character.status} - ${character.species}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Text(
+                        text = "Last known location:",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.LightGray
+                    )
+                    Text(
+                        text = character.location.name,
+                        color = RickAndMortyTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "First seen in:",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = RickAndMortyTheme.colors.textSecondary
+                    )
+                    Text(
+                        text = character.origin.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = RickAndMortyTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = "Last known location:",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.LightGray
-            )
-            Text(
-                text = character.location.name,
-                color = RickAndMortyTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "First seen in:",
-                style = MaterialTheme.typography.labelMedium,
-                color = RickAndMortyTheme.colors.textSecondary
-            )
-            Text(
-                text = character.origin.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = RickAndMortyTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
         }
     }
-}
 
 @Preview
 @Composable
@@ -187,8 +250,11 @@ fun RickAndMortyCharacterCardPreview() {
                 species = "Human",
                 location = Location(name = "unknown", url = ""),
                 origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
-                image = ""
-            )
+                image = "",
+            ),
+            modifier = TODO(),
+            isLoading = TODO(),
+            action = TODO()
         )
     }
 }

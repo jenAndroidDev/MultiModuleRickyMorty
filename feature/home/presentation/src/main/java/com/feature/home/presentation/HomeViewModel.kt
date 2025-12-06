@@ -8,6 +8,9 @@ import com.feature.home.domain.model.Character
 import com.feature.home.domain.repository.HomeRepository
 import com.feature.home.domain.usecase.GetAllCharactersUseCase
 import com.rmworld.core.common.Result
+import com.rmworld.core.common.paging.LoadState
+import com.rmworld.core.common.paging.LoadStates
+import com.rmworld.core.common.paging.LoadType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -55,11 +58,14 @@ class HomeViewModel  @Inject constructor(
             }
         }
     }
-    private fun getAllCharacters(){
+    private fun getAllCharacters(
+        loadType: LoadType = LoadType.ACTION
+    ){
         viewModelScope.launch {
             useCase.invoke().collect{result->
                 when(result){
                 is Result.Loading -> {
+                    setLoading(loadType, LoadState.Loading())
                     Log.d("Success", "getAllCharacters() called with: result = $result")
                 }
                 is Result.Success -> {
@@ -69,13 +75,28 @@ class HomeViewModel  @Inject constructor(
                             data = result.data
                         )
                     }
-                   // _uiState.value = HomeUiState(data = result.data)
+                    setLoading(loadType, LoadState.NotLoading.Complete)
                 }
                 is Result.Error -> {
+                    setLoading(loadType, LoadState.Error(result.exception))
                     Log.d("Success", "getAllCharacters() called with: result = ${result.exception}")
                 }
                 }
             }
+        }
+    }
+    private fun setLoading(
+        loadType: LoadType,
+        loadState: LoadState
+    ){
+        val newLoadState = uiState.value.loadStates
+            .modifyState(loadType,loadState)
+
+        this._uiState.update {
+            it.copy(
+                loadStates = newLoadState,
+                loadState = loadState
+            )
         }
     }
 
@@ -85,7 +106,9 @@ class HomeViewModel  @Inject constructor(
 data class HomeUiState(
     val data: List<Character> = emptyList(),
     val shouldNavToDetailScreen: Boolean  = false,
-    val selectedId:Int = 0
+    val selectedId:Int = 0,
+    val loadStates: LoadStates = LoadStates.IDLE,
+    val loadState: LoadState = LoadState.Loading(),
 )
 sealed interface HomeUiAction{
     data class NavigateToDetailScreen(val id: Int): HomeUiAction
