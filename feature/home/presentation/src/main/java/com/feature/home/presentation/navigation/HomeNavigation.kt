@@ -4,15 +4,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.feature.home.presentation.HomeRoute
-import com.feature.home.presentation.HomeScreen
+import kotlinx.serialization.Serializable
 
-const val HOME_ROUTE  = "home_route"
-fun NavController.navigateToHomeScreen() = navigate(HOME_ROUTE)
+@Serializable data object HomeRoute
+
+fun NavController.navigateToHomeScreen() = navigate(route = HomeRoute)
 
 fun NavGraphBuilder.homeScreen(
     onCharacterClicked: (Int) -> Unit
 ) {
-    composable(HOME_ROUTE) {it->
+    composable<HomeRoute> { it->
         HomeRoute(it){onCharacterClicked.invoke(id)}
     }
 }

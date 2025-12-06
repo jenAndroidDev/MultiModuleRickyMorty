@@ -1,5 +1,8 @@
 package com.feature.home.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Character(
     val created: String = "",
     val episode: List<String> = arrayListOf(),

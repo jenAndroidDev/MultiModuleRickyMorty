@@ -9,6 +9,7 @@ import com.feature.feed.navigation.feedScreen
 import com.feature.home.presentation.navigation.homeScreen
 import com.mmd.feature.presentation.navigation.detailScreen
 import com.mmd.feature.presentation.navigation.navigateToDetailScreen
+import kotlin.reflect.KClass
 
 /*
 * All */
@@ -17,7 +18,7 @@ private const val Tag = "RMWorldNavHost"
 fun RMWorldNavHost(
     modifier: Modifier,
     appState: RMWorldState,
-    startDestination:String,
+    startDestination: KClass<*>,
 
     ){
     val navController = appState.navController
@@ -25,12 +26,13 @@ fun RMWorldNavHost(
     NavHost(navController = navController,
         startDestination = startDestination,
         modifier = modifier){
-        feedScreen()
-        detailScreen()
+        //feedScreen()
         homeScreen{characterId->
             Log.d(Tag, "RMWorldNavHost() called with: characterId = $characterId")
             navController.navigateToDetailScreen()
         }
+        detailScreen()
+
     }
 
 }

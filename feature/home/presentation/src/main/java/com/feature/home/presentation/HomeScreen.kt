@@ -61,6 +61,7 @@ fun HomeScreen(
     val feedState by viewModel.uiState.collectAsStateWithLifecycle()
     if (feedState.shouldNavToDetailScreen){
         onCharacterClicked.invoke(feedState.selectedId)
+        action.invoke(HomeUiAction.ResetNav)
     }
     Log.d("HomeScreen", "HomeScreen() called with: viewModel = ${feedState.data.size}")
     Column(modifier = Modifier.fillMaxSize()

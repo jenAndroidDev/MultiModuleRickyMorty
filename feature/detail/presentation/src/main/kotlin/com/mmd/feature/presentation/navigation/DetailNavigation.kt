@@ -4,15 +4,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mmd.feature.presentation.DetailRoute
+import kotlinx.serialization.Serializable
 
-const val DETAIL_ROUTE = "detail_route"
 
-fun NavController.navigateToDetailScreen() = navigate(DETAIL_ROUTE)
+@Serializable data object DetailRoute
+
+fun NavController.navigateToDetailScreen() = navigate(route = DetailRoute)
 
 fun NavGraphBuilder.detailScreen(){
-    composable(
-        route = DETAIL_ROUTE
-    ) {
+    composable<DetailRoute> {
         DetailRoute()
     }
 }
