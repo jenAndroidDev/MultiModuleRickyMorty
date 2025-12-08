@@ -75,11 +75,5 @@ object HomeModule{
             shouldAddSignInterceptor = false,
         )
     }
-    @Provides
-    @Singleton
-    fun provideNetworkHelper(
-        @ApplicationContext context: Context
-    ): NetworkHelper {
-        return NetworkHelper(context)
-    }
+
 }
