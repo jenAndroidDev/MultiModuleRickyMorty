@@ -79,30 +79,33 @@ private fun RickyAndMortyCharacterContent(
         .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,) {
         LazyColumn {
-            if (isLoading && uiState.data.isEmpty()) {
-                items(10) {
-                    RickAndMortyCharacterCard(
-                        character = Character(
-                            name = "Calypso",
-                            status = "Dead",
-                            species = "Human",
-                            location = Location(name = "unknown", url = ""),
-                            origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
-                            image = "",
-                        ),
-                        action = action,
-                        isLoading = true
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+            when{
+                isLoading && uiState.data.isEmpty()->{
+                    items(10) {
+                        RickAndMortyCharacterCard(
+                            character = Character(
+                                name = "Calypso",
+                                status = "Dead",
+                                species = "Human",
+                                location = Location(name = "unknown", url = ""),
+                                origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
+                                image = "",
+                            ),
+                            action = action,
+                            isLoading = true
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
-            } else {
-                items(count = uiState.data.size) { index ->
-                    RickAndMortyCharacterCard(
-                        character = uiState.data[index],
-                        action = action,
-                        isLoading = false
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+                else->{
+                    items(count = uiState.data.size) { index ->
+                        RickAndMortyCharacterCard(
+                            character = uiState.data[index],
+                            action = action,
+                            isLoading = false
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }
