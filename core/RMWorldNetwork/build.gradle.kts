@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -24,6 +25,9 @@ dependencies{
     implementation(libs.gson)
     implementation(libs.timber)
     implementation(libs.androidx.annotation.jvm)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
 
 }
