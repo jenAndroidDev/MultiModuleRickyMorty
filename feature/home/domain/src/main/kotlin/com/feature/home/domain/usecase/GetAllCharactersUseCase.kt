@@ -16,27 +16,3 @@ class GetAllCharactersUseCase @Inject constructor (
     suspend operator  fun invoke() = repository.getAllCharacterStream()
 
 }
-val mockCharacters = listOf(
-    Character(
-        id = 1,
-        name = "Rick Sanchez",
-        status = "Alive",
-        species = "Human",
-        gender = "Male",
-        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-        origin = Origin("Earth", ""),
-        location = Location("Earth", ""),
-        readStatus = true
-    ),
-    Character(
-        id = 2,
-        name = "Morty Smith",
-        status = "Alive",
-        species = "Human",
-        gender = "Male",
-        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-        origin = Origin("Earth", ""),
-        location = Location("Earth", ""),
-        readStatus = false
-    )
-)
