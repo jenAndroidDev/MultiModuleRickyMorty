@@ -13,11 +13,7 @@ import javax.inject.Inject
 class GetAllCharactersUseCase @Inject constructor (
     private val repository: HomeRepository
 ){
-    operator fun invoke() = flow{
-        emit(Result.Loading)
-        delay(1000)
-        emit(Result.Success(mockCharacters)) //
-    }
+    suspend operator  fun invoke() = repository.getAllCharacterStream()
 
 }
 val mockCharacters = listOf(
