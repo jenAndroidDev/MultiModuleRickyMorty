@@ -60,6 +60,7 @@ dependencies{
     implementation(projects.core.common)
     implementation(projects.core.rmWorldNetwork)
     implementation(projects.feature.home.domain)
+    implementation(projects.core.testing)
 
     implementation(libs.retrofit.core)
     implementation(libs.converter.gson)
