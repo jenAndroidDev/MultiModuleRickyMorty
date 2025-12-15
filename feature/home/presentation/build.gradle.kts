@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.home.presentation"
+    namespace = "com.rmworld.feature.home.presentation"
     compileSdk = 36
 
     buildFeatures {
