@@ -12,7 +12,7 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.mmd.feature.presentation.navigation.navigateToDetailScreen
+import com.rmworld.feature.detail.presentation.navigation.navigateToDetailScreen
 import com.rmworld.feature.home.presentation.navigation.navigateToHomeScreen
 import kotlinx.coroutines.CoroutineScope
 

@@ -1,8 +1,7 @@
 package com.example.multimodulerickymorty.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
-
-import com.mmd.feature.presentation.navigation.DetailRoute
+import com.rmworld.feature.detail.presentation.navigation.DetailRoute
 import com.rmworld.feature.home.presentation.navigation.HomeRoute
 import kotlin.reflect.KClass
 
