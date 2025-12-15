@@ -67,7 +67,6 @@ dependencies {
     //projects core module
     implementation(projects.core.designsystem)
     //projects features
-    implementation(projects.feature.feed)
     implementation(projects.feature.home.presentation)
     implementation(projects.feature.home.domain)
     implementation(projects.feature.home.data)
