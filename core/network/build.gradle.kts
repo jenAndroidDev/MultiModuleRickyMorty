@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rmworld.core"
+    namespace = "com.rmworld.core.network"
     compileSdk = 36
 
     compileOptions {

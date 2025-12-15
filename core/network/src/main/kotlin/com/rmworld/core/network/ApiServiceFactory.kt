@@ -1,4 +1,4 @@
-package jjcodes.network
+package com.rmworld.core.network
 
 import android.util.Log
 import okhttp3.Interceptor

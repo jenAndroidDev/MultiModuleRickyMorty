@@ -1,4 +1,4 @@
-package jjcodes.network
+package com.rmworld.core.network
 
 import java.util.concurrent.TimeUnit
 import okhttp3.Call

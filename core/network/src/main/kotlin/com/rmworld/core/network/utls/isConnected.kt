@@ -1,6 +1,5 @@
-package jjcodes.network.utis
+package com.rmworld.core.network.utls
 
-import android.Manifest
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities

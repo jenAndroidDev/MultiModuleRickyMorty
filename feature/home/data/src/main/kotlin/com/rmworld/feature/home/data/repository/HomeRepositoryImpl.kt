@@ -1,7 +1,7 @@
 package com.rmworld.feature.home.data.repository
 
 import com.rmworld.core.common.Result
-import jjcodes.network.utis.NetworkResult
+import com.rmworld.core.network.utls.NetworkResult
 import com.rmworld.feature.home.data.source.remote.HomeRemoteDataSource
 import com.rmworld.feature.home.domain.model.Character
 import com.rmworld.feature.home.domain.repository.HomeRepository

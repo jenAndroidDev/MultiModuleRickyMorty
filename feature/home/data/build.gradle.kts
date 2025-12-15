@@ -58,7 +58,7 @@ dependencies{
     debugImplementation(libs.ui.tooling)
     //project
     implementation(projects.core.common)
-    implementation(projects.core.rmWorldNetwork)
+    implementation(projects.core.network)
     implementation(projects.feature.home.domain)
     implementation(projects.core.testing)
 

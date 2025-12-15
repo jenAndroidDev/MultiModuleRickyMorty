@@ -39,6 +39,6 @@ dependencies{
     debugImplementation(libs.ui.tooling)
     //projects
     implementation(projects.core.common)
-    implementation(projects.core.rmWorldNetwork)
+    implementation(projects.core.network)
 
 }

@@ -1,6 +1,7 @@
 package com.rmworld.feature.home.data.di
 
 import android.annotation.SuppressLint
+import com.rmworld.core.network.ApiServiceFactory
 import com.rmworld.feature.home.data.repository.HomeRepositoryImpl
 import com.rmworld.feature.home.data.source.remote.HomeRemoteDataSource
 import com.rmworld.feature.home.data.source.remote.HomeRemoteDataSourceImpl
@@ -11,7 +12,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jjcodes.network.ApiServiceFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
