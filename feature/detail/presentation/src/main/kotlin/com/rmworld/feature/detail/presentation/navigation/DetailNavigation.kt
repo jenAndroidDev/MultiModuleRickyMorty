@@ -1,9 +1,9 @@
-/*package com.mmd.feature.presentation.navigation
+package com.rmworld.feature.detail.presentation.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.mmd.feature.presentation.DetailRoute
+import com.rmworld.feature.detail.presentation.DetailRoute
 import kotlinx.serialization.Serializable
 
 
@@ -15,5 +15,5 @@ fun NavGraphBuilder.detailScreen(){
     composable<DetailRoute> {
         DetailRoute()
     }
-}*/
+}
 

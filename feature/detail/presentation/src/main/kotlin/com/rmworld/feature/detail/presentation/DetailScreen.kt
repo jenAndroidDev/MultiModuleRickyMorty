@@ -1,5 +1,4 @@
-/*
-package com.mmd.feature.presentation
+package com.rmworld.feature.detail.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,4 +21,4 @@ fun DetailScreen(){
             horizontalAlignment = Alignment.CenterHorizontally) {
             Text("Detail Screen")
         }
-}*/
+}

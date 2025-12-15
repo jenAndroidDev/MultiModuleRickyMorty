@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.mmd.feature.presentation.navigation.detailScreen
-import com.mmd.feature.presentation.navigation.navigateToDetailScreen
+import com.rmworld.feature.detail.presentation.navigation.detailScreen
+import com.rmworld.feature.detail.presentation.navigation.navigateToDetailScreen
 import com.rmworld.feature.home.presentation.navigation.homeScreen
 import kotlin.reflect.KClass
 
@@ -25,11 +25,6 @@ fun RMWorldNavHost(
     NavHost(navController = navController,
         startDestination = startDestination,
         modifier = modifier){
-        //feedScreen()
-        /*homeScreen{characterId->
-            Log.d(Tag, "RMWorldNavHost() called with: characterId = $characterId")
-            navController.navigateToDetailScreen()
-        }*/
         homeScreen {
             navController.navigateToDetailScreen()
         }
