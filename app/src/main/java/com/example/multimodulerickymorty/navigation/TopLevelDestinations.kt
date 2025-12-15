@@ -1,8 +1,9 @@
 package com.example.multimodulerickymorty.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.feature.home.presentation.navigation.HomeRoute
+
 import com.mmd.feature.presentation.navigation.DetailRoute
+import com.rmworld.feature.home.presentation.navigation.HomeRoute
 import kotlin.reflect.KClass
 
 enum class TopLevelDestinations(

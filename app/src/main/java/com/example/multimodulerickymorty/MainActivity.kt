@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.multimodulerickymorty.navigation.rememberRMWorldState
-import com.feature.home.presentation.navigation.HomeRoute
+import com.rmworld.feature.home.presentation.navigation.HomeRoute
 import dagger.hilt.android.AndroidEntryPoint
 import theme.RickAndMortyTheme
 

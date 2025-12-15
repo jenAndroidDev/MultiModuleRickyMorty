@@ -12,8 +12,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.feature.home.presentation.navigation.navigateToHomeScreen
 import com.mmd.feature.presentation.navigation.navigateToDetailScreen
+import com.rmworld.feature.home.presentation.navigation.navigateToHomeScreen
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -62,7 +62,7 @@ class RMWorldState(
         }
         when(topLevelDestinations){
             TopLevelDestinations.FEED->{
-                navController.navigateToHomeScreen()
+              navController.navigateToHomeScreen()
             }
             TopLevelDestinations.DETAIL->{
                 navController.navigateToDetailScreen()

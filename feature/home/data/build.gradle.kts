@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.home.data"
+    namespace = "com.rmworld.feature.home.data"
     compileSdk = 36
 
     buildFeatures {
