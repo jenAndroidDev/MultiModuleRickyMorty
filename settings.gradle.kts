@@ -23,7 +23,7 @@ rootProject.name = "MultiModuleRickyMorty"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":core")
-include(":core:RMWorldNetwork")
+include(":core:network")
 include(":core:designsystem")
 include(":core:common")
 include(":core:testing")

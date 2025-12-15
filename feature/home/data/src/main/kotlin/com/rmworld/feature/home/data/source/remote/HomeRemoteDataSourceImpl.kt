@@ -2,9 +2,9 @@ package com.rmworld.feature.home.data.source.remote
 
 import com.rmworld.feature.home.data.source.remote.api.ApiService
 import com.rmworld.feature.home.data.source.remote.model.CharacterResponseModel
-import jjcodes.network.utis.BaseRemoteDataSource
-import jjcodes.network.utis.NetworkHelper
-import jjcodes.network.utis.NetworkResult
+import com.rmworld.core.network.utls.BaseRemoteDataSource
+import com.rmworld.core.network.utls.NetworkHelper
+import com.rmworld.core.network.utls.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
