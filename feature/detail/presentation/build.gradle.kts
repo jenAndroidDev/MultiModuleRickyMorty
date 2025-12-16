@@ -45,9 +45,9 @@ dependencies{
     implementation(libs.kotlinx.serialization.json)
 
     //core
-    implementation(projects.feature.home.domain)
     implementation(projects.core.common)
     implementation(projects.core.designsystem)
+    implementation(projects.feature.detail.domain)
     //coil for image loading
     implementation(libs.coil.compose)
 
