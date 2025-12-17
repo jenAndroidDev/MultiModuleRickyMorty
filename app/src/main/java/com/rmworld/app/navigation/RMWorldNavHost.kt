@@ -1,7 +1,6 @@
-package com.example.multimodulerickymorty.navigation
+package com.rmworld.app.navigation
 
 
-/*
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,10 +10,8 @@ import com.rmworld.feature.detail.presentation.navigation.navigateToDetailScreen
 import com.rmworld.feature.home.presentation.navigation.homeScreen
 import kotlin.reflect.KClass
 
-*/
 /*
-* All *//*
-
+* All */
 private const val Tag = "RMWorldNavHost"
 @Composable
 fun RMWorldNavHost(
@@ -28,11 +25,11 @@ fun RMWorldNavHost(
     NavHost(navController = navController,
         startDestination = startDestination,
         modifier = modifier){
-        homeScreen {
+        homeScreen {characterId->
             navController.navigateToDetailScreen()
         }
         detailScreen()
 
     }
 
-}*/
+}

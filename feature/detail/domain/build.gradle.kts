@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.detail.domain"
+    namespace = "com.rmworld.feature.detail.domain"
     compileSdk = 36
 
     buildFeatures {
@@ -40,5 +40,8 @@ dependencies{
     // Android Studio Preview support
     implementation(libs.ui.tooling.preview)
     debugImplementation(libs.ui.tooling)
+
+    implementation(projects.core.common)
+    implementation(projects.core.network)
 
 }

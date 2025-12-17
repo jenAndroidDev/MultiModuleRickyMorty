@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.multimodulerickymorty"
+    namespace = "com.rmworld.app"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.multimodulerickymorty"
+        applicationId = "com.rmworld.app"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -71,7 +71,8 @@ dependencies {
     implementation(projects.feature.home.domain)
     implementation(projects.feature.home.data)
     implementation(projects.feature.detail.presentation)
-    //test
+    implementation(projects.feature.detail.domain)
+    implementation(projects.feature.detail.data)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

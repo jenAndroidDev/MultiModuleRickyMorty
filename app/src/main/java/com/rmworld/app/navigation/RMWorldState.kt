@@ -1,5 +1,4 @@
-/*
-package com.example.multimodulerickymorty.navigation
+package com.rmworld.app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -42,14 +41,12 @@ class RMWorldState(
     val currentDestination:NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    */
-/*val currentTopLevelDestination: TopLevelDestinations?
+    /*val currentTopLevelDestination: TopLevelDestinations?
         @Composable get() = when(currentDestination?.route){
             FEED_ROUTE -> TopLevelDestinations.FEED
             DETAIL_ROUTE -> TopLevelDestinations.DETAIL
             else->null
-        }*//*
-
+        }*/
 
     val topLevelDestinations:List<TopLevelDestinations> = TopLevelDestinations.entries
 
@@ -78,4 +75,4 @@ fun NavOptionsBuilder.popUpToTop(navController: NavController) {
     popUpTo(navController.currentBackStackEntry?.destination?.route ?: return) {
         inclusive =  true
     }
-}*/
+}

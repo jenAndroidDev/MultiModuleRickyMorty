@@ -1,5 +1,4 @@
-/*
-package com.example.multimodulerickymorty
+package com.rmworld.app
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -12,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.example.multimodulerickymorty.navigation.RMWorldNavHost
-import com.example.multimodulerickymorty.navigation.RMWorldState
-import com.example.multimodulerickymorty.navigation.TopLevelDestinations
+import com.rmworld.app.navigation.RMWorldNavHost
+import com.rmworld.app.navigation.RMWorldState
+import com.rmworld.app.navigation.TopLevelDestinations
 import components.RMWorldBarItem
 import components.RMWorldNavigationBar
 import theme.RickAndMortyTheme
@@ -106,4 +105,3 @@ private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLev
     this?.hierarchy?.any {
         it.route?.contains(destination.name, true) ?: false
     } ?: false
-*/

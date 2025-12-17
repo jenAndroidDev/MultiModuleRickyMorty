@@ -40,7 +40,7 @@ abstract class HomeBinderModule {
 @InstallIn(SingletonComponent::class)
 object HomeModule{
 
-    @SuppressLint("NewApi")
+    /*@SuppressLint("NewApi")
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
@@ -49,8 +49,8 @@ object HomeModule{
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(3, TimeUnit.MINUTES)
             .build()
-    }
-    @Provides
+    }*/
+   /* @Provides
     @Singleton
     fun provideRetrofitBuilder(
         okHttpClient: OkHttpClient
@@ -58,7 +58,7 @@ object HomeModule{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
-    }
+    }*/
 
     @Provides
     @Singleton
