@@ -1,6 +1,5 @@
-package com.example.multimodulerickymorty.ui.theme
+package com.rmworld.app.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
