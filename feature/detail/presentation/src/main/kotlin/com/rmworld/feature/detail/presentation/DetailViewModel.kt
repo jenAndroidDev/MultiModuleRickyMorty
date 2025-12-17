@@ -23,16 +23,18 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(DetailUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        getCharacterById()
-    }
-    private fun getCharacterById(){
+     fun getCharacterById(characterId: Int) {
         viewModelScope.launch {
-            useCase.invoke(id = 2).collectLatest { result ->
+            useCase.invoke(id = characterId).collectLatest { result ->
                 when(result){
                     is Result.Error -> {}
                     is Result.Loading -> {}
                     is Result.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                data = result.data
+                            )
+                        }
                         Log.d(Tag, "getCharacterById() called with: result = ${result.data}")
                     }
                 }

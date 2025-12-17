@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.rmworld.feature.detail.presentation.navigation.DetailRoute
 import com.rmworld.feature.detail.presentation.navigation.detailScreen
 import com.rmworld.feature.detail.presentation.navigation.navigateToDetailScreen
 import com.rmworld.feature.home.presentation.navigation.homeScreen
@@ -26,7 +27,7 @@ fun RMWorldNavHost(
         startDestination = startDestination,
         modifier = modifier){
         homeScreen {characterId->
-            navController.navigateToDetailScreen()
+            navController.navigateToDetailScreen(DetailRoute(characterId))
         }
         detailScreen()
 
