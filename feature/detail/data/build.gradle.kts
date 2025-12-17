@@ -2,10 +2,11 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.feature.detail.data"
+    namespace = "com.rmworld.feature.detail.data"
     compileSdk = 36
 
     buildFeatures {
@@ -33,6 +34,15 @@ dependencies{
     implementation(libs.androidx.navigation)
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(projects.feature.detail.domain)
+    implementation(projects.core.common)
+    implementation(projects.core.network)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
 
 

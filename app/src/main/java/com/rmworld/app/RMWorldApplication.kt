@@ -1,4 +1,4 @@
-package com.example.multimodulerickymorty
+package com.rmworld.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

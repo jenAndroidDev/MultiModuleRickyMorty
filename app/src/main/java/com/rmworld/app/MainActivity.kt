@@ -1,17 +1,15 @@
-package com.example.multimodulerickymorty
+package com.rmworld.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-/*
-import com.example.multimodulerickymorty.navigation.rememberRMWorldState
-*/
+import com.rmworld.app.navigation.rememberRMWorldState
 import com.rmworld.feature.home.presentation.navigation.HomeRoute
 import dagger.hilt.android.AndroidEntryPoint
 import theme.RickAndMortyTheme
 
-/*@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,4 +21,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}*/
+}

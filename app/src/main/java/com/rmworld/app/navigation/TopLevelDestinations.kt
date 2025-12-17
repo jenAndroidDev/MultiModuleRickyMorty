@@ -1,5 +1,4 @@
-/*
-package com.example.multimodulerickymorty.navigation
+package com.rmworld.app.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.rmworld.feature.detail.presentation.navigation.DetailRoute
@@ -25,4 +24,4 @@ enum class TopLevelDestinations(
         unselectedIcon = RMWorldIcons.AccountUnSelected,
         route = DetailRoute::class
     )
-}*/
+}
