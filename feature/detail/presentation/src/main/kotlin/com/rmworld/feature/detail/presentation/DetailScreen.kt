@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,29 +39,21 @@ import com.rmworld.feature.detail.domain.model.Origin
 import theme.RickAndMortyTheme
 
 @Composable
-internal fun DetailRoute() {
-    //will remove once data is fetched from api
-    DetailScreen(
-        character = Character(
-        name = "Concerto",
-        status = "Dead",
-        species = "Humanoid",
-        image = "https://rickandmortyapi.com/api/character/avatar/69.jpeg",
-        location = Location("unknown", ""),
-        origin = Origin("Pickle Rick", "")
-    ))
+internal fun DetailRoute(id: Int) {
+
+    DetailScreen(characterId = id)
 }
 
 @Composable
-fun DetailScreen(
-    character: Character,
+ fun DetailScreen(
+    characterId: Int,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.getCharacterById(characterId)
+    }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    val data = uiState.data
-    Log.d("DetailScreem", "DetailScreen() called with: character = $character, viewModel = ${uiState.data}")
-
+    val character = uiState.data
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,8 +62,8 @@ fun DetailScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = character.image,
-            contentDescription = character.name,
+            model = character?.image,
+            contentDescription = character?.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
@@ -81,7 +74,7 @@ fun DetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = character.name,
+            text = character?.name?:"No Name Provided",
             fontWeight = FontWeight.Bold,
             color = RickAndMortyTheme.colors.textPrimary
         )
@@ -89,7 +82,8 @@ fun DetailScreen(
         Spacer(modifier = Modifier.height(4.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            val statusColor = when (character.status) {
+            val status = character?.status?:"No Status Available"
+            val statusColor = when (status) {
                 "Alive" -> Color.Green
                 "Dead" -> Color.Red
                 else -> Color.Gray
@@ -101,14 +95,14 @@ fun DetailScreen(
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "${character.status} - ${character.species}",
+                text = "${status} - ${character?.species}",
                 color = RickAndMortyTheme.colors.textSecondary
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        InfoCard("Last known location:", character.location.name)
+        InfoCard("Last known location:", character?.location?.name?:"No Location Provided")
         Spacer(modifier = Modifier.height(12.dp))
-        InfoCard("First seen in:", character.origin.name)
+        InfoCard("First seen in:", character?.origin?.name?:"No Origin Available")
     }
 }
 
@@ -136,18 +130,3 @@ fun InfoCard(title: String, value: String) {
     }
 }
 
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun DetailScreenPreview() {
-    RickAndMortyTheme {
-        DetailScreen(
-            character = Character(
-            name = "Concerto",
-            status = "Dead",
-            species = "Humanoid",
-            image = "https://rickandmortyapi.com/api/character/avatar/69.jpeg",
-            location = Location("unknown",""),
-            origin = Origin("Pickle Rick", "")
-        ))
-    }
-}

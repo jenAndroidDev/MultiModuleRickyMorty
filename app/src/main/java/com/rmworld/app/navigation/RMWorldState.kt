@@ -12,6 +12,7 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.rmworld.feature.detail.presentation.navigation.DetailRoute
 import com.rmworld.feature.detail.presentation.navigation.navigateToDetailScreen
 import com.rmworld.feature.home.presentation.navigation.navigateToHomeScreen
 import kotlinx.coroutines.CoroutineScope
@@ -41,12 +42,6 @@ class RMWorldState(
     val currentDestination:NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    /*val currentTopLevelDestination: TopLevelDestinations?
-        @Composable get() = when(currentDestination?.route){
-            FEED_ROUTE -> TopLevelDestinations.FEED
-            DETAIL_ROUTE -> TopLevelDestinations.DETAIL
-            else->null
-        }*/
 
     val topLevelDestinations:List<TopLevelDestinations> = TopLevelDestinations.entries
 
@@ -65,7 +60,7 @@ class RMWorldState(
               navController.navigateToHomeScreen()
             }
             TopLevelDestinations.DETAIL->{
-                navController.navigateToDetailScreen()
+                navController.navigateToDetailScreen(DetailRoute(-1))
             }
         }
     }
