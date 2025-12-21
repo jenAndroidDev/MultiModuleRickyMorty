@@ -1,7 +1,5 @@
 package com.rmworld.feature.detail.presentation
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,16 +26,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.rmworld.feature.detail.domain.model.Character
-import com.rmworld.feature.detail.domain.model.Location
-import com.rmworld.feature.detail.domain.model.Origin
+import com.rmworld.core.common.paging.LoadState
+import components.shimmer
 import theme.RickAndMortyTheme
 
+private const val Tag = "DetailScreen"
 @Composable
 internal fun DetailRoute(id: Int) {
 
@@ -53,6 +50,7 @@ internal fun DetailRoute(id: Int) {
         viewModel.getCharacterById(characterId)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isLoading = uiState.loadState is LoadState.Loading
     val character = uiState.data
     Column(
         modifier = Modifier
@@ -61,13 +59,21 @@ internal fun DetailRoute(id: Int) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        val imageModifier = if (!isLoading)Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clip(RoundedCornerShape(12.dp)) else Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+                .shimmer(
+            isLoading = isLoading
+        )
+
         AsyncImage(
             model = character?.image,
             contentDescription = character?.name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(12.dp)),
+            modifier = imageModifier,
             contentScale = ContentScale.Crop
         )
 
@@ -100,16 +106,31 @@ internal fun DetailRoute(id: Int) {
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        InfoCard("Last known location:", character?.location?.name?:"No Location Provided")
+        InfoCard("Last known location:", character?.location?.name?:"No Location Provided",isLoading)
         Spacer(modifier = Modifier.height(12.dp))
-        InfoCard("First seen in:", character?.origin?.name?:"No Origin Available")
+        InfoCard("First seen in:", character?.origin?.name?:"No Origin Available",isLoading)
     }
 }
 
 @Composable
-fun InfoCard(title: String, value: String) {
+fun InfoCard(
+    title: String,
+    value: String,
+    isLoading: Boolean) {
+
+    val infoCardModifier = if (!isLoading){
+        Modifier.fillMaxWidth()
+    }else{
+        Modifier
+            .fillMaxWidth()
+            .shimmer(
+            isLoading = isLoading,
+            cornerRadius = 12.dp
+        )
+    }
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = infoCardModifier,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = RickAndMortyTheme.colors.brand
