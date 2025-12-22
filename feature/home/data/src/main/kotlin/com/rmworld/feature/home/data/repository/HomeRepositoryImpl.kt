@@ -1,6 +1,7 @@
 package com.rmworld.feature.home.data.repository
 
 import com.rmworld.core.common.Result
+import com.rmworld.core.common.apiresult.NoInternetException
 import com.rmworld.core.network.utls.NetworkResult
 import com.rmworld.feature.home.data.source.remote.HomeRemoteDataSource
 import com.rmworld.feature.home.domain.model.Character
@@ -25,7 +26,7 @@ class HomeRepositoryImpl @Inject constructor(
                     Result.Error(Exception(networkResult.message ?: "An unknown error occurred"))
                 }
                 is NetworkResult.NoInternet -> {
-                    Result.Error(Exception(networkResult.message ?: "No internet connection"))
+                    Result.Error(NoInternetException())
                 }
                 is NetworkResult.UnAuthorized -> {
                     Result.Error(Exception(networkResult.message ?: "Unauthorized"))

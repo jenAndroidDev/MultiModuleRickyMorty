@@ -1,5 +1,6 @@
 package com.rmworld.feature.detail.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,6 +54,13 @@ internal fun DetailRoute(id: Int) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLoading = uiState.loadState is LoadState.Loading
     val character = uiState.data
+    val context = LocalContext.current
+    LaunchedEffect(uiState.uiText) {
+        uiState.uiText?.let { it->
+            Toast.makeText(context,it.asString(context),Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
