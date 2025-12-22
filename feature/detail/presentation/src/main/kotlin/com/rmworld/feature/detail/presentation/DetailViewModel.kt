@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rmworld.core.common.Result
+import com.rmworld.core.common.apiresult.toUiText
 import com.rmworld.core.common.paging.LoadState
 import com.rmworld.core.common.paging.LoadStates
 import com.rmworld.core.common.paging.LoadType
+import com.rmworld.core.common.ui.UiText
 import com.rmworld.feature.detail.domain.model.Character
 import com.rmworld.feature.detail.domain.usecase.GetCharacterByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,9 +36,6 @@ class DetailViewModel @Inject constructor(
                         setLoading(LoadType.REFRESH, LoadState.Loading())
 
                     }
-                    is Result.Error -> {
-
-                    }
                     is Result.Success -> {
                         _uiState.update {
                             it.copy(
@@ -45,6 +44,15 @@ class DetailViewModel @Inject constructor(
                         }
                         setLoading(LoadType.REFRESH, LoadState.NotLoading.Complete)
                         Log.d(Tag, "getCharacterById() called with: result = ${result.data}")
+                    }
+                    is Result.Error -> {
+                        val uiText = result.exception.toUiText()
+                        _uiState.update {
+                            it.copy(
+                                uiText = uiText
+                            )
+                        }
+                        Log.d(Tag, "getCharacterById() called with: result = ${uiText}")
                     }
                 }
             }
@@ -70,4 +78,5 @@ data class DetailUiState(
     val data: Character?=null,
     val loadStates: LoadStates = LoadStates.IDLE,
     val loadState: LoadState = LoadState.Loading(),
+    val uiText: UiText? = null
 )
