@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rmworld.core.common.Result
+import com.rmworld.core.common.apiresult.toUiText
 import com.rmworld.core.common.paging.LoadState
 import com.rmworld.core.common.paging.LoadStates
 import com.rmworld.core.common.paging.LoadType
+import com.rmworld.core.common.ui.UiText
 import com.rmworld.feature.home.domain.model.Character
 import com.rmworld.feature.home.domain.usecase.GetAllCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -76,6 +78,12 @@ class HomeViewModel  @Inject constructor(
                     setLoading(loadType, LoadState.NotLoading.Complete)
                 }
                 is Result.Error -> {
+                    val uiText = result.exception.toUiText()
+                    _uiState.update {
+                        it.copy(
+                            uiText = uiText
+                        )
+                    }
                     setLoading(loadType, LoadState.Error(result.exception))
                     Log.d("Success", "getAllCharacters() called with: result = ${result.exception}")
                 }
@@ -102,11 +110,13 @@ class HomeViewModel  @Inject constructor(
 }
 
 data class HomeUiState(
+    val loadStates: LoadStates = LoadStates.IDLE,
+    val loadState: LoadState = LoadState.Loading(),
     val data: List<Character> = emptyList(),
     val shouldNavToDetailScreen: Boolean  = false,
     val selectedId:Int = 0,
-    val loadStates: LoadStates = LoadStates.IDLE,
-    val loadState: LoadState = LoadState.Loading(),
+    val uiText: UiText?=null
+
 )
 sealed interface HomeUiAction{
     data class NavigateToDetailScreen(val id: Int): HomeUiAction
