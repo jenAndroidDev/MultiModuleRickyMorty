@@ -2,6 +2,7 @@ package com.rmworld.core.network.utls
 
 
 import androidx.annotation.WorkerThread
+import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
 import org.jetbrains.annotations.Contract
 import retrofit2.HttpException
@@ -109,6 +110,35 @@ open class BaseRemoteDataSource(
         }*/
     }
 
+    protected suspend fun <T>newSafeApiCall(
+        call: suspend ()-> Response<T>
+    ): NetworkResult<T>{
+        if (!netWorkHelper.checkForInternet()){
+           return NetworkResult.NoInternet("Unable to connect to the internet")
+        }
+        return runCatching { call() }.fold(
+            onSuccess = { response ->
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        NetworkResult.Success(
+                            it,
+                            response.message(),
+                            code = response.code()
+                        )
+
+                    }?: NetworkResult.Error("Success. But no data")
+                }else{
+                    apiErrorHandler(response)
+                }
+            },
+            onFailure = {exception ->
+                if (exception is CancellationException) throw exception
+                NetworkResult.Error(exception.toString())
+            }
+        )
+    }
+    }
+
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient =true
@@ -119,4 +149,3 @@ open class BaseRemoteDataSource(
                 json.decodeFromString<BaseResponse>(error)
             }
         }.getOrNull()
-}
