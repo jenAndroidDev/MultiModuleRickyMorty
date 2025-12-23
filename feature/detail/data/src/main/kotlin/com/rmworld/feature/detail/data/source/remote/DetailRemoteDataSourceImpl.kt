@@ -18,7 +18,7 @@ class DetailRemoteDataSourceImpl @Inject constructor(
 ) : DetailRemoteDataSource, BaseRemoteDataSource(networkHelper) {
     override fun getCharacterById(id: Int): Flow<NetworkResult<Result>> = flow{
         emit(NetworkResult.Loading())
-        emit(safeApiCall { apiService.getCharacterById(id) })
+        emit(newSafeApiCall { apiService.getCharacterById(id) })
     }.flowOn(Dispatchers.IO)
 
 
