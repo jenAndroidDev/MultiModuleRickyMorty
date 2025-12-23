@@ -128,7 +128,7 @@ open class BaseRemoteDataSource(
 
                     }?: NetworkResult.Error("Success. But no data")
                 }else{
-                    apiErrorHandler(response)
+                    httpErrorHandler(response)
                 }
             },
             onFailure = {exception ->
@@ -137,11 +137,35 @@ open class BaseRemoteDataSource(
             }
         )
     }
-    }
+    private fun <T> httpErrorHandler(response: Response<T>): NetworkResult<T>{
+        val errorBodyJson = response.errorBody()?.string()
+        Timber.d("Response: errorBody $errorBodyJson")
+        val errorBody = parseErrorBodyJson(errorBodyJson)
+        var errorMessage = ""
+       return runCatching {
+            when(errorBody?.statusCode){
+                HttpURLConnection.HTTP_INTERNAL_ERROR->{
+                    errorMessage = "${errorBody.message} ${HttpURLConnection.HTTP_INTERNAL_ERROR}"
+                }
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-        isLenient =true
+                HttpURLConnection.HTTP_UNAUTHORIZED->{
+                    errorMessage = "UnAuthorized User"
+                    return NetworkResult.UnAuthorized(errorMessage)
+                }
+            }
+        }.fold(
+            onSuccess = {
+                return NetworkResult.Error(
+                "Api Error Response: $errorMessage",
+                uiMessage = errorBody?.message,
+                code = response.code()
+            )},
+            onFailure = {error->
+                NetworkResult.Error(
+                    message = "Failed to parse Error Body: ${error.message}",
+                    code = HttpURLConnection.HTTP_VERSION
+                )}
+            )
     }
     private fun parseErrorBodyJson(errorBodyJson: String?)=
         runCatching {
@@ -149,3 +173,10 @@ open class BaseRemoteDataSource(
                 json.decodeFromString<BaseResponse>(error)
             }
         }.getOrNull()
+    }
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient =true
+    }
+
