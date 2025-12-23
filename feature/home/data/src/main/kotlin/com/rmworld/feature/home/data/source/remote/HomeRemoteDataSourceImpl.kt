@@ -17,6 +17,6 @@ class HomeRemoteDataSourceImpl @Inject constructor(
 ): HomeRemoteDataSource, BaseRemoteDataSource(networkHelper) {
     override fun getAllCharacters(): Flow<NetworkResult<CharacterResponseModel>> = flow{
         emit(NetworkResult.Loading())
-        emit(safeApiCall { apiService.getAllCharacters() })
+        emit(newSafeApiCall { apiService.getAllCharacters() })
     }.flowOn(Dispatchers.IO)
 }
