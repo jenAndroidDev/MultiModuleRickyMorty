@@ -1,10 +1,12 @@
 package com.rmworld.core.network.utls
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class BaseResponse(
-    @SerializedName("statusCode")
+    @SerialName("statusCode")
     val statusCode: Int,
-    @SerializedName("message")
+    @SerialName("message")
     val message: String,
 )
