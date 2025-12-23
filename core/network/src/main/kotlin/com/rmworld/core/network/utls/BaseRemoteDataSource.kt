@@ -2,13 +2,14 @@ package com.rmworld.core.network.utls
 
 
 import androidx.annotation.WorkerThread
-import com.google.gson.GsonBuilder
+import kotlinx.serialization.json.Json
 import org.jetbrains.annotations.Contract
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import java.net.HttpURLConnection
+
 
 open class BaseRemoteDataSource(
     private val netWorkHelper: NetworkHelper,
@@ -61,7 +62,7 @@ open class BaseRemoteDataSource(
     private fun <T> apiErrorHandler(response: Response<T>): NetworkResult<T> {
         val errorBodyJson = response.errorBody()?.string()
         Timber.d("Response: errorBody $errorBodyJson")
-        val errorBody = parseErrorBody(errorBodyJson)
+        val errorBody = parseErrorBodyJson(errorBodyJson)
         val message = response.message()
         var errorMessage: String
         try {
@@ -72,8 +73,6 @@ open class BaseRemoteDataSource(
 
                 HttpURLConnection.HTTP_UNAUTHORIZED -> {
                     errorMessage = "UnAuthorized"
-//                    sessionPref.invlaidCofigUserLogout(response.toString())
-//                    sessionPref.Logout()
                     return NetworkResult.UnAuthorized(errorMessage)
                 }
 
@@ -82,7 +81,6 @@ open class BaseRemoteDataSource(
                 }
             }
         } catch (e: Exception) {
-//            ifDebug { Timber.tag(logTag).e(e, e.toString()) }
             errorMessage = "${response.code()} $message"
         }
         Timber.d("Api Error: ${errorBody?.message}")
@@ -97,7 +95,10 @@ open class BaseRemoteDataSource(
     private fun parseErrorBody(errorBodyJson: String?): BaseResponse? {
         Timber.d(logTag, "parseErrorBody: $errorBodyJson")
         errorBodyJson ?: return null
-        return try {
+        return runCatching {
+            Json.decodeFromString<BaseResponse>(errorBodyJson)
+        }.getOrNull()
+        /*return try {
             val gson = GsonBuilder()
                 .setLenient()
                 .create()
@@ -105,7 +106,17 @@ open class BaseRemoteDataSource(
         } catch (e: Exception) {
             Timber.e(e)
             null
-        }
+        }*/
     }
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient =true
+    }
+    private fun parseErrorBodyJson(errorBodyJson: String?)=
+        runCatching {
+            errorBodyJson?.let { error ->
+                json.decodeFromString<BaseResponse>(error)
+            }
+        }.getOrNull()
 }

@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -19,6 +20,7 @@ android {
 }
 dependencies{
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.core)
     implementation(libs.javax.inject)
     implementation(libs.logging.interceptor)
