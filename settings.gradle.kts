@@ -21,13 +21,15 @@ dependencyResolutionManagement {
 
 rootProject.name = "MultiModuleRickyMorty"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+includeBuild("build-logic")
+
 include(":app")
 include(":core")
 include(":core:network")
 include(":core:designsystem")
 include(":core:common")
 include(":core:testing")
-include("")
 include(":feature")
 include(":feature:home")
 include(":feature:home:data")
@@ -37,4 +39,3 @@ include(":feature:detail")
 include(":feature:detail:presentation")
 include(":feature:detail:domain")
 include(":feature:detail:data")
- 
