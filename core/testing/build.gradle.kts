@@ -1,21 +1,10 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.rmworld.android.library)
     alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.rmworld.core.testing"
-    compileSdk = 36
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,10 +12,6 @@ android {
 dependencies {
     implementation(libs.kotlinx.coroutines.test)
     api(libs.junit)
-
-
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-
-
 }
