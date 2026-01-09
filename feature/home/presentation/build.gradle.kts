@@ -6,10 +6,6 @@ plugins {
 
 android {
     namespace = "com.rmworld.feature.home.presentation"
-    compileSdk = 36
-    defaultConfig {
-        minSdk=26
-    }
     buildFeatures {
         buildConfig = true
     }
