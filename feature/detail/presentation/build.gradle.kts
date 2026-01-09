@@ -7,7 +7,6 @@ plugins {
 android {
     namespace = "com.rmworld.feature.detail.presentation"
     buildFeatures {
-        compose = true
         buildConfig = true
     }
     buildTypes{
