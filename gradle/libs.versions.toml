@@ -90,9 +90,10 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = {id="com.google.devtools.ksp",version.ref="ksp"}
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "composeCompiler" }
+
 
 #plugins defined by ricky morty world
 
 rmworld-android-application = { id = "com.rmworld.android.application" }
 rmworld-android-library = { id = "com.rmworld.android.library" }
+rmworld-android-library-compose = {id = "com.rmworld.android.library.compose"}

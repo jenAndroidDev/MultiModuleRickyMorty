@@ -1,30 +1,21 @@
 plugins {
-    alias(libs.plugins.rmworld.android.library)
-    alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.rmworld.android.library.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.rmworld.feature.home.presentation"
-
-    buildFeatures {
-        compose = true
-        buildConfig = true
+    compileSdk = 36
+    defaultConfig {
+        minSdk=26
     }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-        debug { 
-            isMinifyEnabled = false 
-        }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.material3)
@@ -33,6 +24,7 @@ dependencies {
     implementation(libs.androidx.navigation)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
+    implementation(libs.androidx.core.ktx)
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.kotlinx.serialization.json)
