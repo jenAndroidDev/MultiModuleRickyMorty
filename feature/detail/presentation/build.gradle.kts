@@ -6,22 +6,15 @@ plugins {
 
 android {
     namespace = "com.rmworld.feature.detail.presentation"
-    compileSdk = 36
-    defaultConfig {
-        minSdk=26
-    }
-
     buildFeatures {
         compose = true
         buildConfig = true
     }
-
     buildTypes{
         debug { isMinifyEnabled = false }
     }
 }
 dependencies{
-    /*implementation(platform(libs.androidx.compose.bom))*/
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.material3)
