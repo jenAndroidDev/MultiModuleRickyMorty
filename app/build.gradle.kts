@@ -1,8 +1,6 @@
 plugins {
-    //alias(libs.plugins.android.application)
-    //alias(libs.plugins.kotlin.android)
     alias(libs.plugins.rmworld.android.application)
-    alias(libs.plugins.kotlin.compose)
+    //alias(libs.plugins.rmworld.android.library.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
@@ -10,12 +8,11 @@ plugins {
 
 android {
     namespace = "com.rmworld.app"
-    compileSdk = 36
+    //compileSdk = 36
 
     defaultConfig {
         applicationId = "com.rmworld.app"
         minSdk = 26
-        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -31,43 +28,37 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     buildFeatures {
         compose = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
 
-
-    //hilt
+    // hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation)
     implementation(libs.hilt.navigation)
     ksp(libs.hilt.android.compiler)
-    //retrofit
+
+    // retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.logging.interceptor)
-    //projects core module
+
+    // projects core module
     implementation(projects.core.designsystem)
-    //projects features
+
+    // projects features
     implementation(projects.feature.home.presentation)
     implementation(projects.feature.home.domain)
     implementation(projects.feature.home.data)

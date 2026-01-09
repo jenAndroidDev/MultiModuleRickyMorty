@@ -25,12 +25,17 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication"){
-            id= libs.plugins.rmworld.android.application.get().pluginId
+            id = libs.plugins.rmworld.android.application.get().pluginId
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibrary"){
-            id= libs.plugins.rmworld.android.library.get().pluginId
+            id = libs.plugins.rmworld.android.library.asProvider().get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidComposeLibrary"){
+            id = libs.plugins.rmworld.android.library.compose.get().pluginId
+            implementationClass = "AndroidApplicationComposePlugin"
+        }
+
     }
 }
