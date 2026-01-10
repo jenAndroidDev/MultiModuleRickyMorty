@@ -34,7 +34,7 @@ gradlePlugin {
         }
         register("androidComposeLibrary"){
             id = libs.plugins.rmworld.android.library.compose.get().pluginId
-            implementationClass = "AndroidApplicationComposePlugin"
+            implementationClass = "AndroidLibraryComposePlugin"
         }
 
     }
