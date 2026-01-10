@@ -16,9 +16,9 @@ android {
 dependencies{
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.material3)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.foundation)
-    implementation(libs.ui)
+    implementation(libs.androidx.ui)
     implementation(libs.androidx.navigation)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
@@ -34,7 +34,7 @@ dependencies{
     implementation(libs.coil.compose)
 
     // Android Studio Preview support
-    implementation(libs.ui.tooling.preview)
-    debugImplementation(libs.ui.tooling)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
 
 }
