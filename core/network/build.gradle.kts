@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.rmworld.android.library)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.rmworld.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -17,9 +17,6 @@ dependencies{
     implementation(libs.gson)
     implementation(libs.timber)
     implementation(libs.androidx.annotation.jvm)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
 
     implementation(libs.converter.gson)
 
