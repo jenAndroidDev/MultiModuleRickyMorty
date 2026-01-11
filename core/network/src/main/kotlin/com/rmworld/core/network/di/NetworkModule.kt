@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import com.rmworld.core.network.utls.NetworkHelper
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -53,5 +54,17 @@ object NetworkModule {
             .writeTimeout(3, TimeUnit.MINUTES)
             .addInterceptor(logging)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJson():Json = getJson()
+
+    private fun getJson(): Json {
+        return Json {
+            ignoreUnknownKeys = true
+            isLenient =true
+        }
+
     }
 }

@@ -10,11 +10,14 @@ import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import java.net.HttpURLConnection
+import javax.inject.Inject
 
 
-open class BaseRemoteDataSource(
+open class BaseRemoteDataSource (
     private val netWorkHelper: NetworkHelper,
 ) {
+    @Inject
+    lateinit var json: Json
 
     private val logTag: String = BaseRemoteDataSource::class.java.simpleName
 
@@ -173,10 +176,5 @@ open class BaseRemoteDataSource(
                 json.decodeFromString<BaseResponse>(error)
             }
         }.getOrNull()
-    }
-
-    private val json = Json {
-        ignoreUnknownKeys = true
-        isLenient =true
     }
 
