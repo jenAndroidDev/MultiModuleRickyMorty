@@ -36,6 +36,10 @@ gradlePlugin {
             id = libs.plugins.rmworld.android.library.compose.get().pluginId
             implementationClass = "AndroidLibraryComposePlugin"
         }
+        register("hilt"){
+            id = libs.plugins.rmworld.hilt.get().pluginId
+            implementationClass = "HiltConventionPlugin"
+        }
 
     }
 }
