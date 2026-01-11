@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.rmworld.android.library.compose)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.rmworld.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -20,10 +20,13 @@ dependencies{
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.navigation)
-    implementation(libs.hilt.android)
+
     implementation(libs.hilt.navigation)
-    ksp(libs.hilt.android.compiler)
+
     implementation(libs.kotlinx.serialization.json)
+
+   /* implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)*/
 
     //core
     implementation(projects.core.common)

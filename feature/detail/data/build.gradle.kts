@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.rmworld.android.library)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.rmworld.hilt)
 }
 
 android {
@@ -8,9 +8,6 @@ android {
 }
 
 dependencies {
-    // Dependency Injection
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
     implementation(libs.kotlinx.serialization.json)
 
     // Domain and Core
