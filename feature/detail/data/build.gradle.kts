@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.rmworld.android.library)
     alias(libs.plugins.rmworld.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -17,6 +18,6 @@ dependencies {
 
     // Networking
     implementation(libs.retrofit.core)
-    implementation(libs.converter.gson)
+    implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.logging.interceptor)
 }

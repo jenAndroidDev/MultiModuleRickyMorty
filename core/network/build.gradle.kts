@@ -14,10 +14,6 @@ dependencies{
     implementation(libs.retrofit.core)
     implementation(libs.javax.inject)
     implementation(libs.logging.interceptor)
-    implementation(libs.gson)
     implementation(libs.timber)
     implementation(libs.androidx.annotation.jvm)
-
-    implementation(libs.converter.gson)
-
 }

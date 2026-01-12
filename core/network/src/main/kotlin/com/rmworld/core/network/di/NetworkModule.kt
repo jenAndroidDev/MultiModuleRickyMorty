@@ -1,8 +1,6 @@
 package com.rmworld.core.network.di
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,10 +8,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import com.rmworld.core.network.utls.NetworkHelper
 import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -36,15 +35,15 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofitBuilder(
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        json: Json
     ): Retrofit.Builder {
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .client(okHttpClient)
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
@@ -63,8 +62,7 @@ object NetworkModule {
     private fun getJson(): Json {
         return Json {
             ignoreUnknownKeys = true
-            isLenient =true
+            isLenient = true
         }
-
     }
 }
