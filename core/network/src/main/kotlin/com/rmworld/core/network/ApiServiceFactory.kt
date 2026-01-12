@@ -35,7 +35,7 @@ class ApiServiceFactory @Inject constructor(
             }.build()
 
         return retrofitBuilder.baseUrl(baseUrl)
-            .callFactory(TimeoutCallFactory(okHttpClient))
+            .callFactory(TimeoutCallFactory(httpClient))
             .build()
             .create(serviceType)
     }
