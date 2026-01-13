@@ -70,15 +70,17 @@ private fun RMWorldBottomBar(
     currentDestination:NavDestination?,
     onNavigateToDestination:(TopLevelDestinations)->Unit,
 ){
-
     RMWorldNavigationBar(modifier = modifier.fillMaxWidth()) {
         destinations.onEachIndexed { index, topLevelDestination ->
+
+            val isSelected = currentDestination.isTopLevelDestinationInHierarchy(topLevelDestination)
+
             Log.d(
-                Tag,
-                "ComposeSignUpBottomBar() called with: index = $index, topLevelDestination = $topLevelDestination, route = ${currentDestination?.route}",
+                "RMWorldNavigationBar",
+                "RMWorldBottomBar() called with: index = $isSelected, topLevelDestination = ${topLevelDestination.route}"
             )
             RMWorldBarItem(
-                selected = false,
+                selected = appState.currentDestination?.route==topLevelDestination.name,
                 icon = {
                     Icon(
                         imageVector = destinations[index].selectedIcon,
@@ -101,6 +103,7 @@ private fun RMWorldBottomBar(
         }
     }
 }
+
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestinations) =
     this?.hierarchy?.any {
         it.route?.contains(destination.name, true) ?: false

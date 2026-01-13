@@ -13,7 +13,8 @@ private val darkColorPalette = RickAndMortyColors(
     brandSecondary =GREY_WHITE,
     background = BACKGROUND,
     textPrimary = GREY_WHITE,
-    textSecondary = GREY
+    textSecondary = GREY,
+    tertiary = NEON_GREEN
 
 )
 
@@ -22,7 +23,8 @@ private val lightColorPalette = RickAndMortyColors(
     brandSecondary = GOLDEN_YELLOW,
     background = GREY_10,
     textPrimary = GOLDEN_YELLOW,
-    textSecondary = BLACK_GREY_60
+    textSecondary = BLACK_GREY_60,
+    tertiary = NEON_GREEN
 
 )
 
@@ -65,5 +67,6 @@ data class RickAndMortyColors(
     val brandSecondary: Color,
     val background: Color,
     val textPrimary: Color,
-    val textSecondary: Color
+    val textSecondary: Color,
+    val tertiary: Color
 )

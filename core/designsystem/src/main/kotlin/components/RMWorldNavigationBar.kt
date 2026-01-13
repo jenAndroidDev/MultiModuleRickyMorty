@@ -1,25 +1,38 @@
 package components
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import theme.RickAndMortyTheme
 
+private val navigationBarShape = RoundedCornerShape(
+    topEnd = 12.dp,
+    topStart = 12.dp,
+    bottomEnd = 28.dp,
+    bottomStart = 28.dp
+)
+
 @Composable
 fun RMWorldNavigationBar(
-    modifier: Modifier,
-    content:@Composable RowScope.()->Unit
-){
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit
+) {
     NavigationBar(
-        modifier = modifier,
-        containerColor = RickAndMortyTheme.colors.brandSecondary,
-        contentColor = Color.Gray.copy(alpha = 0.3f),
+        modifier = modifier
+            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .clip(navigationBarShape),
         tonalElevation = 0.dp,
+        containerColor = RickAndMortyTheme.colors.background.copy(alpha = 0.95f),
+        windowInsets = WindowInsets(0, 0, 0, 0),
         content = content,
     )
 }
@@ -44,9 +57,9 @@ fun RowScope.RMWorldBarItem(
         alwaysShowLabel = alwaysShowLabel,
         label = label,
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = RickAndMortyTheme.colors.textPrimary,
-            selectedTextColor = RickAndMortyTheme.colors.textPrimary,
-            indicatorColor = RickAndMortyTheme.colors.textPrimary,
+            selectedIconColor = RickAndMortyTheme.colors.tertiary,
+            selectedTextColor = RickAndMortyTheme.colors.tertiary,
+            indicatorColor = Color.Transparent,
 
             unselectedIconColor = RickAndMortyTheme.colors.textSecondary,
             unselectedTextColor = RickAndMortyTheme.colors.textSecondary,
