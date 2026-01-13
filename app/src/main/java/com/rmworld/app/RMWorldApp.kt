@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.rmworld.app.navigation.RMWorldNavHost
 import com.rmworld.app.navigation.RMWorldState
@@ -50,9 +52,11 @@ internal fun RMWorld(
             onNavigateToDestination = appState::navigateToTopLevelDestination,
             appState = appState
         )
-    }) {
-        Log.d("scaffold", "ComposeSignUpApp() called...$it")
-        Column(modifier = modifier.fillMaxSize()) {
+    }) { innerPadding ->
+        Log.d("scaffold", "ComposeSignUpApp() called...$innerPadding")
+        Column(modifier = modifier
+            .fillMaxSize()
+            .padding(innerPadding)) {
             RMWorldNavHost(
                 modifier = modifier,
                 appState = appState,
@@ -71,31 +75,15 @@ private fun RMWorldBottomBar(
     onNavigateToDestination:(TopLevelDestinations)->Unit,
 ){
     RMWorldNavigationBar(modifier = modifier.fillMaxWidth()) {
-        destinations.onEachIndexed { index, topLevelDestination ->
-
+        destinations.forEach { topLevelDestination ->
             val isSelected = currentDestination.isTopLevelDestinationInHierarchy(topLevelDestination)
-
-            Log.d(
-                "RMWorldNavigationBar",
-                "RMWorldBottomBar() called with: index = $isSelected, topLevelDestination = ${topLevelDestination.route}"
-            )
             RMWorldBarItem(
-                selected = appState.currentDestination?.route==topLevelDestination.name,
-                icon = {
-                    Icon(
-                        imageVector = destinations[index].selectedIcon,
-                        contentDescription = destinations[index].title
-                    )
-                },
-                selectedIcon = {
-                    Icon(
-                        imageVector = destinations[index].unselectedIcon,
-                        contentDescription = topLevelDestination.title
-                    )
-                },
+                selected = isSelected,
                 label = {
                     Text(topLevelDestination.title)
                 },
+                selectedImageVector = topLevelDestination.selectedIcon,
+                unSelectedImageVector = topLevelDestination.unselectedIcon,
                 onClick = {
                     onNavigateToDestination.invoke(topLevelDestination)
                 }
@@ -105,6 +93,4 @@ private fun RMWorldBottomBar(
 }
 
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestinations) =
-    this?.hierarchy?.any {
-        it.route?.contains(destination.name, true) ?: false
-    } ?: false
+    this?.hierarchy?.any { it.hasRoute(destination.route) } ?: false
