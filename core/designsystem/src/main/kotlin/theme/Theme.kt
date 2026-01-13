@@ -9,13 +9,15 @@ import androidx.compose.ui.graphics.Color
 
 
 private val darkColorPalette = RickAndMortyColors(
-    brand =GREY,
-    brandSecondary =GREY_WHITE,
+    brand = GREY,
+    brandSecondary = GREY_WHITE,
     background = BACKGROUND,
     textPrimary = GREY_WHITE,
     textSecondary = GREY,
-    tertiary = NEON_GREEN
-
+    tertiary = TERTIARY,
+    onTertiary = ON_TERTIARY,
+    tertiaryContainer = TERTIARY_CONTAINER,
+    surface = BLACK_GREY_60
 )
 
 private val lightColorPalette = RickAndMortyColors(
@@ -24,8 +26,10 @@ private val lightColorPalette = RickAndMortyColors(
     background = GREY_10,
     textPrimary = GOLDEN_YELLOW,
     textSecondary = BLACK_GREY_60,
-    tertiary = NEON_GREEN
-
+    tertiary = TERTIARY,
+    onTertiary = ON_TERTIARY,
+    tertiaryContainer = TERTIARY_CONTAINER,
+    surface = GREY_WHITE
 )
 
 @Composable
@@ -68,5 +72,8 @@ data class RickAndMortyColors(
     val background: Color,
     val textPrimary: Color,
     val textSecondary: Color,
-    val tertiary: Color
+    val tertiary: Color,
+    val onTertiary: Color,
+    val tertiaryContainer: Color,
+    val surface: Color
 )
