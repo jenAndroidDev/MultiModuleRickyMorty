@@ -45,7 +45,9 @@ fun RMWorldNavigationBar(
         NavigationBar(
             modifier = Modifier
                 .clip(navigationBarShape)
-                .background(RickAndMortyTheme.colors.surface),
+                .background(RickAndMortyTheme.colors.background.copy(
+                    alpha = 0.95f
+                )),
             containerColor = Color.Transparent,
             tonalElevation = 0.dp,
             windowInsets = WindowInsets(0, 0, 0, 0),
