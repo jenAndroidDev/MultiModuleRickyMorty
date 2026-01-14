@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -27,24 +29,29 @@ private val navigationBarShape = RoundedCornerShape(
     topEnd = 12.dp,
     topStart = 12.dp,
     bottomStart = 28.dp,
-    bottomEnd = 28.dp)
-
+    bottomEnd = 28.dp
+)
 
 @Composable
 fun RMWorldNavigationBar(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
 ) {
-    NavigationBar(
+    Box(
         modifier = modifier
+            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 24.dp)
-            .clip(navigationBarShape),
-        containerColor = RickAndMortyTheme.colors.surface
-            .copy(alpha = 0.95f),
-        tonalElevation = 0.dp,
-        windowInsets = WindowInsets(0, 0, 0, 0),
-        content = content,
-    )
+    ) {
+        NavigationBar(
+            modifier = Modifier
+                .clip(navigationBarShape)
+                .background(RickAndMortyTheme.colors.surface),
+            containerColor = Color.Transparent,
+            tonalElevation = 0.dp,
+            windowInsets = WindowInsets(0, 0, 0, 0),
+            content = content,
+        )
+    }
 }
 
 @Composable
@@ -63,11 +70,13 @@ fun RowScope.RMWorldBarItem(
         selected = selected,
         onClick = onClick,
         icon = {
-            if (selected) RMWorldGradientBottomNavigationIcon(imageVector =
-                selectedImageVector,
-                contentDescription = "",
-                selected = true
-            ) else{
+            if (selected) {
+                RMWorldGradientBottomNavigationIcon(
+                    imageVector = selectedImageVector,
+                    contentDescription = "",
+                    selected = true
+                )
+            } else {
                 RMWorldGradientBottomNavigationIcon(
                     imageVector = unSelectedImageVector,
                     contentDescription = "",
@@ -87,17 +96,18 @@ fun RowScope.RMWorldBarItem(
         )
     )
 }
+
 @Composable
 fun RMWorldGradientBottomNavigationIcon(
     imageVector: ImageVector,
     contentDescription: String?,
     selected: Boolean,
-    size: Dp = 24.dp
+    size: Dp = 32.dp
 ) {
     val gradientColorList = listOf(
         RickAndMortyTheme.colors.tertiary,
-        RickAndMortyTheme.colors.onTertiary,
-        RickAndMortyTheme.colors.tertiaryContainer
+        RickAndMortyTheme.colors.tertiaryContainer,
+        RickAndMortyTheme.colors.onTertiary
     )
     if (selected) {
         Box(
@@ -105,7 +115,8 @@ fun RMWorldGradientBottomNavigationIcon(
                 .size(size)
                 .background(
                     brush = Brush.radialGradient(
-                        colors = gradientColorList
+                        colors = gradientColorList,
+                        tileMode = TileMode.Clamp
                     ),
                     shape = CircleShape
                 ),
@@ -120,7 +131,8 @@ fun RMWorldGradientBottomNavigationIcon(
     } else {
         Icon(
             imageVector = imageVector,
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
+            tint = RickAndMortyTheme.colors.textSecondary
         )
     }
 }
