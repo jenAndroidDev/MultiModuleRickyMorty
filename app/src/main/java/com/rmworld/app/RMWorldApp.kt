@@ -56,7 +56,7 @@ internal fun RMWorld(
         Log.d("scaffold", "ComposeSignUpApp() called...$innerPadding")
         Column(modifier = modifier
             .fillMaxSize()
-            .padding(innerPadding)) {
+            .padding(top = innerPadding.calculateTopPadding())) {
             RMWorldNavHost(
                 modifier = modifier,
                 appState = appState,
