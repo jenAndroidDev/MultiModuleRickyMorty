@@ -3,10 +3,8 @@ package com.rmworld.feature.detail.presentation
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +24,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,63 +34,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.rmworld.core.common.paging.LoadState
 import com.rmworld.feature.detail.domain.model.Character
+import com.rmworld.feature.detail.domain.model.Location
+import com.rmworld.feature.detail.domain.model.Origin
 import components.shimmer
 import extensions.sharedElement
 import theme.LocalAnimatedVisibilityScope
-import theme.LocalSharedTransitionScope
 import theme.RickAndMortyTheme
 
-private const val Tag = "DetailScreen"
 @Composable
 internal fun DetailRoute(id: Int) {
-
     DetailScreen(characterId = id)
 }
 
-
 @Composable
- fun DetailScreen(
+fun DetailScreen(
     characterId: Int,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-        ?: throw IllegalStateException("No Scope found")
-
-    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
-        ?: throw IllegalStateException("No Scope found")
-
-
     LaunchedEffect(Unit) {
         viewModel.getCharacterById(characterId)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val character = uiState.data
+    val isLoading = uiState.loadState is LoadState.Loading
     val context = LocalContext.current
+
     LaunchedEffect(uiState.uiText) {
-        uiState.uiText?.let { it->
-            Toast.makeText(context,it.asString(context),Toast.LENGTH_SHORT).show()
+        uiState.uiText?.let { uiText ->
+            Toast.makeText(context, uiText.asString(context), Toast.LENGTH_SHORT).show()
         }
     }
-    character?.let {
-        CharacterDetailContent(
-            character = it,
-            isLoading = uiState.loadState is LoadState.Loading,
-        )
-    }
+
+    CharacterDetailContent(
+        sharedId = characterId,
+        character = character,
+        isLoading = isLoading,
+    )
 }
 
 @Composable
 fun CharacterDetailContent(
-    character: Character,
+    sharedId: Int,
+    character: Character?,
     isLoading: Boolean,
-){
-
+) {
+    val shouldLoadImage = !isLoading
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -98,77 +93,85 @@ fun CharacterDetailContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        val imageModifier = /*if (!isLoading)*/Modifier
-            .sharedElement("photo_".plus(character.id))
+        val imageModifier = Modifier
+            .sharedElement("photo_".plus(sharedId))
             .fillMaxWidth()
             .aspectRatio(1f)
-            .clip(RoundedCornerShape(12.dp)) /*else Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .shimmer(
-                isLoading = isLoading
-            )*/
+            .clip(RoundedCornerShape(12.dp))
 
-        AsyncImage(
-            model = character?.image,
-            contentDescription = character?.name,
-            modifier = imageModifier,
-            contentScale = ContentScale.Crop
-        )
+        if (shouldLoadImage) {
+            AsyncImage(
+                model = character?.image,
+                contentDescription = "Character Image",
+                modifier = imageModifier,
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Box(
+                modifier = imageModifier
+                    .shimmer(isLoading = true)
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = character?.name?:"No Name Provided",
+            text = character?.name ?: "No Name Provided",
             fontWeight = FontWeight.Bold,
             color = RickAndMortyTheme.colors.textPrimary
         )
-
         Spacer(modifier = Modifier.height(4.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            val status = character?.status?:"No Status Available"
-            val statusColor = when (status) {
-                "Alive" -> Color.Green
-                "Dead" -> Color.Red
-                else -> Color.Gray
-            }
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .background(statusColor, shape = CircleShape)
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = "${status} - ${character?.species}",
-                color = RickAndMortyTheme.colors.textSecondary
-            )
-        }
+        RickyMortyCharacterStatus(
+            status = character?.status,
+            species = character?.species
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        InfoCard("Last known location:", character?.location?.name?:"No Location Provided",isLoading)
+        InfoCard("Last known location:", character?.location?.name ?: "No Location Provided", isLoading)
         Spacer(modifier = Modifier.height(12.dp))
-        InfoCard("First seen in:", character?.origin?.name?:"No Origin Available",isLoading)
+        InfoCard("First seen in:", character?.origin?.name ?: "No Origin Available", isLoading)
     }
+}
 
-
+@Composable
+fun RickyMortyCharacterStatus(
+    status: String?,
+    species: String?
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        val displayStatus = status ?: "No Status Available"
+        val statusColor = when (displayStatus) {
+            "Alive" -> Color.Green
+            "Dead" -> Color.Red
+            else -> Color.Gray
+        }
+        Box(
+            modifier = Modifier
+                .size(8.dp)
+                .background(statusColor, shape = CircleShape)
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text = "${displayStatus} - ${species}",
+            color = RickAndMortyTheme.colors.textSecondary
+        )
+    }
 }
 
 @Composable
 fun InfoCard(
     title: String,
     value: String,
-    isLoading: Boolean) {
-
-    val infoCardModifier = if (!isLoading){
+    isLoading: Boolean
+) {
+    val infoCardModifier = if (!isLoading) {
         Modifier.fillMaxWidth()
-    }else{
+    } else {
         Modifier
             .fillMaxWidth()
             .shimmer(
-            isLoading = isLoading,
-            cornerRadius = 12.dp
-        )
+                isLoading = isLoading,
+                cornerRadius = 12.dp
+            )
     }
 
     Card(
@@ -177,7 +180,7 @@ fun InfoCard(
         colors = CardDefaults.cardColors(
             containerColor = RickAndMortyTheme.colors.brand
                 .copy(alpha = 0.3f),
-            )
+        )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -192,4 +195,3 @@ fun InfoCard(
         }
     }
 }
-
