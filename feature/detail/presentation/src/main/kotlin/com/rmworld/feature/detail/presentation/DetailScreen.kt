@@ -1,6 +1,12 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalAnimationApi::class)
 package com.rmworld.feature.detail.presentation
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +39,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.rmworld.core.common.paging.LoadState
+import com.rmworld.feature.detail.domain.model.Character
 import components.shimmer
+import extensions.sharedElement
+import theme.LocalAnimatedVisibilityScope
+import theme.LocalSharedTransitionScope
 import theme.RickAndMortyTheme
 
 private const val Tag = "DetailScreen"
@@ -43,16 +53,23 @@ internal fun DetailRoute(id: Int) {
     DetailScreen(characterId = id)
 }
 
+
 @Composable
  fun DetailScreen(
     characterId: Int,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No Scope found")
+
+    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No Scope found")
+
+
     LaunchedEffect(Unit) {
         viewModel.getCharacterById(characterId)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isLoading = uiState.loadState is LoadState.Loading
     val character = uiState.data
     val context = LocalContext.current
     LaunchedEffect(uiState.uiText) {
@@ -60,6 +77,19 @@ internal fun DetailRoute(id: Int) {
             Toast.makeText(context,it.asString(context),Toast.LENGTH_SHORT).show()
         }
     }
+    character?.let {
+        CharacterDetailContent(
+            character = it,
+            isLoading = uiState.loadState is LoadState.Loading,
+        )
+    }
+}
+
+@Composable
+fun CharacterDetailContent(
+    character: Character,
+    isLoading: Boolean,
+){
 
     Column(
         modifier = Modifier
@@ -69,15 +99,16 @@ internal fun DetailRoute(id: Int) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val imageModifier = if (!isLoading)Modifier
+        val imageModifier = /*if (!isLoading)*/Modifier
+            .sharedElement("photo_".plus(character.id))
             .fillMaxWidth()
             .aspectRatio(1f)
-            .clip(RoundedCornerShape(12.dp)) else Modifier
+            .clip(RoundedCornerShape(12.dp)) /*else Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-                .shimmer(
-            isLoading = isLoading
-        )
+            .shimmer(
+                isLoading = isLoading
+            )*/
 
         AsyncImage(
             model = character?.image,
@@ -119,6 +150,8 @@ internal fun DetailRoute(id: Int) {
         Spacer(modifier = Modifier.height(12.dp))
         InfoCard("First seen in:", character?.origin?.name?:"No Origin Available",isLoading)
     }
+
+
 }
 
 @Composable

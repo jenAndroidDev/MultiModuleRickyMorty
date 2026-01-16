@@ -3,9 +3,9 @@ package com.rmworld.feature.detail.presentation.navigation
 import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.rmworld.feature.detail.presentation.DetailRoute
+import extensions.composableWithCompositionLocal
 import kotlinx.serialization.Serializable
 
 
@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 fun NavController.navigateToDetailScreen(route: DetailRoute) = navigate(route = route)
 
 fun NavGraphBuilder.detailScreen(){
-    composable<DetailRoute> {backStackEntry->
+    composableWithCompositionLocal<DetailRoute> {backStackEntry->
         val detail: DetailRoute = backStackEntry.toRoute()
         val characterId = detail.id
         Log.d("Detail Route", "detailScreen() called with: backStackEntry = $characterId")
