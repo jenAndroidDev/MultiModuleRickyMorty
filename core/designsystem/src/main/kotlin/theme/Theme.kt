@@ -1,9 +1,17 @@
+
+
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package theme
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
@@ -77,3 +85,12 @@ data class RickAndMortyColors(
     val tertiaryContainer: Color,
     val surface: Color
 )
+
+
+val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope> {
+    error("No SharedTransitionScope provided")
+}
+val LocalAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope> {
+    error("No AnimatedVisibilityScope provided")
+}
+

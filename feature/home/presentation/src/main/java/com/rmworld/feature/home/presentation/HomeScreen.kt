@@ -1,6 +1,8 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
 package com.rmworld.feature.home.presentation
 
 import android.widget.Toast
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -40,6 +43,7 @@ import com.rmworld.feature.home.domain.model.Character
 import com.rmworld.feature.home.domain.model.Location
 import com.rmworld.feature.home.domain.model.Origin
 import components.shimmer
+import extensions.sharedElement
 import theme.RickAndMortyTheme
 
 @Composable
@@ -82,7 +86,8 @@ private fun RickyAndMortyCharacterContent(
 ){
 
     Column(modifier = Modifier
-        .fillMaxSize(),
+        .fillMaxSize()
+        .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,) {
         LazyColumn {
             when{
@@ -147,6 +152,7 @@ private fun RickAndMortyCharacterCard(
                     model = character.image,
                     contentDescription = character.name,
                     modifier = Modifier
+                        .sharedElement("photo_".plus(character.id))
                         .fillMaxHeight()
                         .aspectRatio(1f)
                         .clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp))
@@ -218,3 +224,4 @@ private fun RickAndMortyCharacterCard(
             }
         }
     }
+
