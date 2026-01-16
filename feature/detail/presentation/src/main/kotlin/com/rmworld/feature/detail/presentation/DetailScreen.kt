@@ -2,7 +2,6 @@
 package com.rmworld.feature.detail.presentation
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
@@ -24,9 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,18 +31,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.rmworld.core.common.paging.LoadState
 import com.rmworld.feature.detail.domain.model.Character
-import com.rmworld.feature.detail.domain.model.Location
-import com.rmworld.feature.detail.domain.model.Origin
 import components.shimmer
 import extensions.sharedElement
-import theme.LocalAnimatedVisibilityScope
 import theme.RickAndMortyTheme
 
 @Composable
@@ -64,14 +57,7 @@ fun DetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val character = uiState.data
     val isLoading = uiState.loadState is LoadState.Loading
-    val context = LocalContext.current
-
-    LaunchedEffect(uiState.uiText) {
-        uiState.uiText?.let { uiText ->
-            Toast.makeText(context, uiText.asString(context), Toast.LENGTH_SHORT).show()
-        }
-    }
-
+    UiTextErrorEffect(uiState = uiState)
     CharacterDetailContent(
         sharedId = characterId,
         character = character,
@@ -112,9 +98,7 @@ fun CharacterDetailContent(
                     .shimmer(isLoading = true)
             )
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
             text = character?.name ?: "No Name Provided",
             fontWeight = FontWeight.Bold,
@@ -126,9 +110,9 @@ fun CharacterDetailContent(
             species = character?.species
         )
         Spacer(modifier = Modifier.height(16.dp))
-        InfoCard("Last known location:", character?.location?.name ?: "No Location Provided", isLoading)
+        RickyMortyCharacterInfoCard("Last known location:", character?.location?.name ?: "No Location Provided", isLoading)
         Spacer(modifier = Modifier.height(12.dp))
-        InfoCard("First seen in:", character?.origin?.name ?: "No Origin Available", isLoading)
+        RickyMortyCharacterInfoCard("First seen in:", character?.origin?.name ?: "No Origin Available", isLoading)
     }
 }
 
@@ -158,7 +142,7 @@ fun RickyMortyCharacterStatus(
 }
 
 @Composable
-fun InfoCard(
+fun RickyMortyCharacterInfoCard(
     title: String,
     value: String,
     isLoading: Boolean
@@ -192,6 +176,15 @@ fun InfoCard(
                 text = value,
                 color = RickAndMortyTheme.colors.textSecondary
             )
+        }
+    }
+}
+@Composable
+fun UiTextErrorEffect(uiState: DetailUiState){
+    val context = LocalContext.current
+    LaunchedEffect(uiState.uiText) {
+        uiState.uiText?.let { uiText ->
+            Toast.makeText(context, uiText.asString(context), Toast.LENGTH_SHORT).show()
         }
     }
 }
