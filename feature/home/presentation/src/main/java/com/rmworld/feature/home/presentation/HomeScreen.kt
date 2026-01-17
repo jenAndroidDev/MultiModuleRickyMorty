@@ -82,7 +82,7 @@ private fun RickyAndMortyCharacterContent(
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .statusBarsPadding(),
+        .padding(all = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,) {
         LazyColumn {
             when{
