@@ -69,12 +69,7 @@ fun HomeScreen(
         onCharacterClicked.invoke(feedState.selectedId)
         action.invoke(HomeUiAction.ResetNav)
     }
-    val context = LocalContext.current
-    LaunchedEffect(feedState.uiText) {
-        feedState.uiText?.let { uiText ->
-            Toast.makeText(context,uiText.asString(context), Toast.LENGTH_LONG).show()
-        }
-    }
+    UiTextErrorEffect(feedState)
     val isLoading = feedState.loadState is LoadState.Loading
     RickyAndMortyCharacterContent(uiState = feedState, isLoading = isLoading, action = action)
 }
@@ -224,4 +219,13 @@ private fun RickAndMortyCharacterCard(
             }
         }
     }
+@Composable
+fun UiTextErrorEffect(uiState: HomeUiState){
+    val context = LocalContext.current
+    LaunchedEffect(uiState.uiText) {
+        uiState.uiText?.let { uiText ->
+            Toast.makeText(context,uiText.asString(context), Toast.LENGTH_LONG).show()
+        }
+    }
+}
 
