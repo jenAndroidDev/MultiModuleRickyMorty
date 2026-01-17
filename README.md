@@ -14,7 +14,10 @@
 * **Dependency Injection:** Hilt
 * **Build System:** Gradle with Convention Plugins (Build Logic)
 * **Architecture Setup:** Multi-Module Architecture
-* **Networking:** REST API (Rick & Morty Public API)
+* **Networking:** REST API (Rick & Morty Free API)
+
+##Demo Video
+![demo-2](https://github.com/user-attachments/assets/079a6909-69ff-41bb-8b1a-8047e7dc04a8)
 
 ---
 
