@@ -34,9 +34,9 @@ private val lightColorPalette = RickAndMortyColors(
     background = GREY_10,
     textPrimary = GOLDEN_YELLOW,
     textSecondary = BLACK_GREY_60,
-    tertiary = TERTIARY,
-    onTertiary = ON_TERTIARY,
-    tertiaryContainer = TERTIARY_CONTAINER,
+    tertiary = NeonYellowDark,
+    onTertiary = NeonYellowDeep,
+    tertiaryContainer = NeonYellowGlow,
     surface = GREY_WHITE
 )
 
