@@ -14,7 +14,7 @@
 * **Dependency Injection:** Hilt
 * **Build System:** Gradle with Convention Plugins (Build Logic)
 * **Architecture Setup:** Multi-Module Architecture
-* **Networking:** Retrofit 2
+* **Networking:** Retrofit 2,Kotlinx-Serialization
 * **Navigation:** Type Safe Navigation
 
 ##Demo Video
