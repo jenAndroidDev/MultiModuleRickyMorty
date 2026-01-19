@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import coil.compose.AsyncImage
 import com.rmworld.core.common.paging.LoadState
+import com.rmworld.core.common.utils.CharacterConstants
 import com.rmworld.feature.home.domain.model.Character
 import com.rmworld.feature.home.domain.model.Location
 import com.rmworld.feature.home.domain.model.Origin
@@ -170,8 +171,8 @@ private fun RickAndMortyCharacterCard(
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         val statusColor = when (character.status) {
-                            "Alive" -> Color.Green
-                            "Dead" -> Color.Red
+                            CharacterConstants.CHARACTER_ALIVE_STATUS -> Color.Green
+                            CharacterConstants.CHARACTER_DEAD_STATUS  -> Color.Red
                             else -> Color.Gray
                         }
                         Box(
