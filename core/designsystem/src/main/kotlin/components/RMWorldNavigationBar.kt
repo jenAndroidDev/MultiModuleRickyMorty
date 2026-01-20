@@ -2,6 +2,7 @@ package components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +59,67 @@ fun RMWorldNavigationBar(
             content = content,
         )
     }
+}
+
+@Composable
+fun RMWorldNavigationRail(
+    modifier: Modifier = Modifier,
+    header: @Composable (ColumnScope.() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    NavigationRail(
+        modifier = modifier,
+        containerColor = Color.Transparent,
+        contentColor = RMWorldNavigationDefaults.navigationContentColor(),
+        header = header,
+        content = content,
+    )
+}
+
+
+@Composable
+fun RMWorldNavigationRailItem(
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = false,
+    alwaysShowLabel: Boolean = true,
+    unSelectedImageVector: ImageVector,
+    selectedImageVector: ImageVector,
+    label: @Composable (()->Unit)?=null
+){
+    NavigationRailItem(
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        icon = {
+            if (selected){
+                RMWorldGradientBottomNavigationIcon(
+                    imageVector = selectedImageVector,
+                    contentDescription = "",
+                    selected = true
+                )
+            }else{
+                RMWorldGradientBottomNavigationIcon(
+                    imageVector = unSelectedImageVector,
+                    contentDescription = "",
+                    selected = false
+                )
+            }
+        },
+        label = {
+            label?.invoke()
+        },
+        alwaysShowLabel = alwaysShowLabel,
+        colors = NavigationRailItemDefaults.colors(
+            selectedIconColor = RMWorldNavigationDefaults.navigationColorUnSpecified(),
+            unselectedIconColor = RMWorldNavigationDefaults.navigationColorUnSpecified(),
+            selectedTextColor = RMWorldNavigationDefaults.navigationSelectedTextColor(),
+            unselectedTextColor = RMWorldNavigationDefaults.navigationUnSelectedTextColor(),
+            indicatorColor = RMWorldNavigationDefaults.navigationColorUnSpecified()
+        )
+    )
 }
 
 @Composable
@@ -136,5 +202,36 @@ fun RMWorldGradientBottomNavigationIcon(
             contentDescription = contentDescription,
             tint = RickAndMortyTheme.colors.textSecondary
         )
+    }
+}
+
+@ThemePreviews
+@Composable
+fun RMWorldNavigationPreview(){
+    val items = listOf("Home", "Search")
+    val selectedImageVectors = listOf(
+        RMWorldIcons.HomeSelected,
+        RMWorldIcons.AccountSelected
+    )
+    val unSelectedImageVectors = listOf(
+        RMWorldIcons.HomeUnSelected,
+        RMWorldIcons.AccountUnSelected
+    )
+    RickAndMortyTheme {
+        RMWorldNavigationRail {
+            items.forEachIndexed {
+                index, item ->
+                RMWorldNavigationRailItem(
+                    label = {
+                        Text(item)
+                    },
+                    selected = index == 0,
+                    onClick = {  },
+                    selectedImageVector = selectedImageVectors[index],
+                    unSelectedImageVector = unSelectedImageVectors[index]
+
+                )
+            }
+        }
     }
 }

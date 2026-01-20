@@ -67,6 +67,11 @@ internal fun RMWorld(
 }
 
 @Composable
+private fun RMWorldRailItem(){
+
+}
+
+@Composable
 private fun RMWorldBottomBar(
     modifier: Modifier,
     destinations: List<TopLevelDestinations>,
