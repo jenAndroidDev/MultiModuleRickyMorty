@@ -17,6 +17,7 @@ import com.rmworld.app.navigation.TopLevelDestinations
 import components.RMWorldBarItem
 import components.RMWorldNavigationBar
 import components.RMWorldNavigationSuiteScaffold
+import theme.RickAndMortyTheme
 import kotlin.reflect.KClass
 
 private const val Tag = "RMWorldApp"
@@ -58,7 +59,9 @@ internal fun RMWorld(
             }
         }
     ) {
-        Scaffold { innerPadding ->
+        Scaffold(
+            containerColor = RickAndMortyTheme.colors.background
+        ) { innerPadding ->
             Column(
                 modifier = modifier
                     .fillMaxSize()
