@@ -29,11 +29,17 @@ fun RMWorldNavigationSuiteScaffold(
     val navigationSuiteItemColors = NavigationSuiteItemColors(
         navigationRailItemColors = NavigationRailItemDefaults.colors(
             indicatorColor = RMWorldNavigationDefaults.navigationColorUnSpecified(),
+            selectedTextColor = RMWorldNavigationDefaults.navigationSelectedTextColor(),
+            unselectedTextColor = RMWorldNavigationDefaults.navigationUnSelectedTextColor()
             ),
         navigationBarItemColors = NavigationBarItemDefaults.colors(
-            indicatorColor = RMWorldNavigationDefaults.navigationColorUnSpecified()
+            indicatorColor = RMWorldNavigationDefaults.navigationColorUnSpecified(),
+            selectedTextColor = RMWorldNavigationDefaults.navigationSelectedTextColor(),
+            unselectedTextColor = RMWorldNavigationDefaults.navigationUnSelectedTextColor()
         ),
         navigationDrawerItemColors = NavigationDrawerItemDefaults.colors(
+            selectedTextColor = RMWorldNavigationDefaults.navigationSelectedTextColor(),
+            unselectedTextColor = RMWorldNavigationDefaults.navigationUnSelectedTextColor()
         )
     )
     NavigationSuiteScaffold(
@@ -104,6 +110,6 @@ object RMWorldNavigationDefaults{
     fun navigationSelectedTextColor() = RickAndMortyTheme.colors.tertiary
 
     @Composable
-    fun navigationUnSelectedTextColor() = RickAndMortyTheme.colors.textSecondary
+    fun navigationUnSelectedTextColor() = RickAndMortyTheme.colors.textPrimary.copy(alpha = 0.85f)
 
 }
