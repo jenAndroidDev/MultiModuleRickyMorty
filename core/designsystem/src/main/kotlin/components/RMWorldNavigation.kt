@@ -28,10 +28,10 @@ fun RMWorldNavigationSuiteScaffold(
     )
     val navigationSuiteItemColors = NavigationSuiteItemColors(
         navigationRailItemColors = NavigationRailItemDefaults.colors(
-
-        ),
+            indicatorColor = RMWorldNavigationDefaults.navigationColorUnSpecified(),
+            ),
         navigationBarItemColors = NavigationBarItemDefaults.colors(
-
+            indicatorColor = RMWorldNavigationDefaults.navigationColorUnSpecified()
         ),
         navigationDrawerItemColors = NavigationDrawerItemDefaults.colors(
         )
@@ -92,7 +92,7 @@ class RMWorldNavigationSuiteScope internal constructor(
 object RMWorldNavigationDefaults{
 
     @Composable
-    fun navigationColorUnSpecified() = Color.Unspecified
+    fun navigationColorUnSpecified() = Color.Transparent
 
     @Composable
     fun navigationSelectedItemColor() = Color.Unspecified
