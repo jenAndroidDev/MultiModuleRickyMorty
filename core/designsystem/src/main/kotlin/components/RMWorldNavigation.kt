@@ -73,13 +73,13 @@ class RMWorldNavigationSuiteScope internal constructor(
                 RMWorldGradientBottomNavigationIcon(
                     imageVector = selectedIcon,
                     contentDescription = "",
-                    selected = true
+                    selected = selected
                 )
             } else {
                 RMWorldGradientBottomNavigationIcon(
                     imageVector = unSelectedIcon,
                     contentDescription = "",
-                    selected = false
+                    selected = selected
                 )
             }
         },
