@@ -13,11 +13,12 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import theme.RickAndMortyTheme
 
 @Composable
 fun RMWorldNavigationSuiteScaffold(
-    navigationSuiteItems: RMWorldNavigationSuiteScope.()-> Unit,
+    navigationSuiteItems:  RMWorldNavigationSuiteScope.()-> Unit,
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     content: @Composable () -> Unit
@@ -61,17 +62,25 @@ class RMWorldNavigationSuiteScope internal constructor(
         selected: Boolean,
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
-        icon: @Composable () -> Unit,
-        selectedIcon: @Composable () -> Unit = icon,
+        selectedIcon: ImageVector,
+        unSelectedIcon: ImageVector,
         label: @Composable (() -> Unit)? = null,
     ) = navigationSuiteScope.item(
         selected = selected,
         onClick = onClick,
         icon = {
             if (selected) {
-                selectedIcon()
+                RMWorldGradientBottomNavigationIcon(
+                    imageVector = selectedIcon,
+                    contentDescription = "",
+                    selected = true
+                )
             } else {
-                icon()
+                RMWorldGradientBottomNavigationIcon(
+                    imageVector = unSelectedIcon,
+                    contentDescription = "",
+                    selected = false
+                )
             }
         },
         label = label,
