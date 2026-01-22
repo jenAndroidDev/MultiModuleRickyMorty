@@ -2,7 +2,15 @@
 package com.rmworld.feature.home.presentation
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -26,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,44 +82,48 @@ fun HomeScreen(
     val isLoading = feedState.loadState is LoadState.Loading
     RickyAndMortyCharacterContent(uiState = feedState, isLoading = isLoading, action = action)
 }
+
 @Composable
 private fun RickyAndMortyCharacterContent(
     uiState: HomeUiState,
     isLoading: Boolean,
     action: (HomeUiAction)-> Unit = {}
 ){
-
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(all = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,) {
-        LazyColumn {
-            when{
-                isLoading && uiState.data.isEmpty()->{
-                    items(10) {
-                        RickAndMortyCharacterCard(
-                            character = com.rmworld.feature.home.domain.model.Character(
-                                name = "Calypso",
-                                status = "Dead",
-                                species = "Human",
-                                location = Location(name = "unknown", url = ""),
-                                origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
-                                image = "",
-                            ),
-                            action = action,
-                            isLoading = true
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 12.dp)
+    ) {
+        if (isLoading && uiState.data.isEmpty()) {
+            RickyMortyCharacterLoadingState()
+        } else if (uiState.data.isNotEmpty()) {
+            LazyColumn {
+                items(
+                    count = uiState.data.size,
+                    key = { index -> uiState.data[index].id }
+                ) { index ->
+                    val itemVisibleState = remember {
+                        MutableTransitionState(false).apply { targetState = true }
                     }
-                }
-                else->{
-                    items(count = uiState.data.size) { index ->
-                        RickAndMortyCharacterCard(
-                            character = uiState.data[index],
-                            action = action,
-                            isLoading = false
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
+
+                    AnimatedVisibility(
+                        visibleState = itemVisibleState,
+                        enter = slideInVertically(
+                            initialOffsetY = { it },
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioLowBouncy,
+                                stiffness = Spring.StiffnessLow
+                            )
+                        ) + fadeIn(),
+                    ) {
+                        Column {
+                            RickAndMortyCharacterCard(
+                                character = uiState.data[index],
+                                action = action,
+                                isLoading = false
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
                 }
             }
@@ -131,7 +143,7 @@ private fun RickAndMortyCharacterCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp)
-                    .shimmer(isLoading = true, cornerRadius = 12.dp) // isLoading is always true here
+                    .shimmer(isLoading = true, cornerRadius = 12.dp)
             )
         } else {
             Row(
@@ -220,6 +232,7 @@ private fun RickAndMortyCharacterCard(
             }
         }
     }
+
 @Composable
 fun UiTextErrorEffect(uiState: HomeUiState){
     val context = LocalContext.current
@@ -230,3 +243,39 @@ fun UiTextErrorEffect(uiState: HomeUiState){
     }
 }
 
+@Composable
+private fun RickyMortyCharacterLoadingState() {
+    LazyColumn {
+        items(count = 10) {
+            val itemVisibleState = remember {
+                MutableTransitionState(false).apply { targetState = true }
+            }
+            AnimatedVisibility(
+                visibleState = itemVisibleState,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioLowBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                ) + fadeIn()
+            ) {
+                Column {
+                    RickAndMortyCharacterCard(
+                        character = Character(
+                            name = "Calypso",
+                            status = "Dead",
+                            species = "Human",
+                            location = Location(name = "unknown", url = ""),
+                            origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
+                            image = "",
+                        ),
+                        action = {},
+                        isLoading = true
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
+    }
+}

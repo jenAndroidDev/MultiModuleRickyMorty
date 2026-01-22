@@ -6,6 +6,7 @@ import com.rmworld.core.network.utls.BaseRemoteDataSource
 import com.rmworld.core.network.utls.NetworkHelper
 import com.rmworld.core.network.utls.NetworkResult
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -17,6 +18,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(
 ): HomeRemoteDataSource, BaseRemoteDataSource(networkHelper) {
     override fun getAllCharacters(): Flow<NetworkResult<CharacterResponseModel>> = flow{
         emit(NetworkResult.Loading())
+        delay(2000)
         emit(newSafeApiCall { apiService.getAllCharacters() })
     }.flowOn(Dispatchers.IO)
 }
