@@ -8,6 +8,7 @@
   * Custom theming using CompositionLocal
   * Shared Transition Layout
   * Light & Dark mode support
+  * Adaptive Layouts
 * **Architecture:** Clean Architecture + MVI (Model–View–Intent)
 * **State Management:** StateFlow, SharedFlow
 * **Asynchronous:** Kotlin Coroutines, Flow
