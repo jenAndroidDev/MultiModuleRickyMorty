@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.rmworld.android.library)
+    alias(libs.plugins.rmworld.android.library.compose)
 }
 
 android {
