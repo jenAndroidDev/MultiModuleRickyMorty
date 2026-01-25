@@ -1,4 +1,4 @@
-# Rick & Morty Android App
+# Ricky & Morty Android App
 
 ## 🛠️ Tech Stack
 
