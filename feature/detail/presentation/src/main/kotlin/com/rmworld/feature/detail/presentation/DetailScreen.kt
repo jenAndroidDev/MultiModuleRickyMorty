@@ -102,7 +102,8 @@ fun CharacterDetailContent(
         Text(
             text = character?.name ?: "No Name Provided",
             fontWeight = FontWeight.Bold,
-            color = RickAndMortyTheme.colors.textPrimary
+            color = RickAndMortyTheme.colors.textPrimary,
+            style = RickAndMortyTheme.typography.textLarge
         )
         Spacer(modifier = Modifier.height(4.dp))
         RickyMortyCharacterStatus(
@@ -136,7 +137,8 @@ fun RickyMortyCharacterStatus(
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = "${displayStatus} - ${species}",
-            color = RickAndMortyTheme.colors.textSecondary
+            color = RickAndMortyTheme.colors.textSecondary,
+            style = RickAndMortyTheme.typography.textMedium
         )
     }
 }
@@ -169,11 +171,13 @@ fun RickyMortyCharacterInfoCard(
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
                 text = title,
+                style = RickAndMortyTheme.typography.textMedium,
                 color = RickAndMortyTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = value,
+                style = RickAndMortyTheme.typography.textMedium,
                 color = RickAndMortyTheme.colors.textSecondary
             )
         }
