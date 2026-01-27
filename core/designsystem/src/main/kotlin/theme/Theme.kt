@@ -58,19 +58,24 @@ object RickAndMortyTheme{
     val colors: RickAndMortyColors
         @Composable
         get() = LocalRickAndMortyColors.current
+
+    val typography: RickyMortyAppTypoGraphy
+        @Composable
+        get() = LocalRickAndMortyTypography.current
 }
 
 @Composable
 fun ProvideRickAndMortyColors(
     colors: RickAndMortyColors,
+    typography: RickyMortyAppTypoGraphy = RickyMortyAppTypoGraphy(),
     content: @Composable () -> Unit
 ){
-    CompositionLocalProvider(LocalRickAndMortyColors provides colors, content = content)
+    CompositionLocalProvider(
+        LocalRickAndMortyColors provides colors,
+        LocalRickAndMortyTypography provides typography,
+        content = content)
 }
 
-private val LocalRickAndMortyColors = staticCompositionLocalOf<RickAndMortyColors> {
-    error("No RickAndMortyColorPalette provided")
-}
 
 
 @Immutable
@@ -85,6 +90,13 @@ data class RickAndMortyColors(
     val tertiaryContainer: Color,
     val surface: Color
 )
+
+private val LocalRickAndMortyColors = staticCompositionLocalOf<RickAndMortyColors> {
+    error("No RickAndMortyColorPalette provided")
+}
+private val LocalRickAndMortyTypography = staticCompositionLocalOf<RickyMortyAppTypoGraphy> {
+    error("No RickAndMortyTypography provided")
+}
 
 
 val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope> {
