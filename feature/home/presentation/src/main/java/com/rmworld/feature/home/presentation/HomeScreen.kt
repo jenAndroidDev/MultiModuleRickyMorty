@@ -173,7 +173,7 @@ private fun RickAndMortyCharacterCard(
                 ) {
                     Text(
                         text = character.name,
-                        fontWeight = FontWeight.Bold,
+                        style = RickAndMortyTheme.typography.textMedium,
                         color = RickAndMortyTheme.colors.textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -195,7 +195,7 @@ private fun RickAndMortyCharacterCard(
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "${character.status} - ${character.species}",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = RickAndMortyTheme.typography.textMedium,
                             color = Color.White
                         )
                     }
@@ -204,11 +204,12 @@ private fun RickAndMortyCharacterCard(
 
                     Text(
                         text = "Last known location:",
-                        style = MaterialTheme.typography.labelMedium,
+                        style = RickAndMortyTheme.typography.textMedium,
                         color = Color.LightGray
                     )
                     Text(
                         text = character.location.name,
+                        style = RickAndMortyTheme.typography.textMedium,
                         color = RickAndMortyTheme.colors.textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -218,12 +219,12 @@ private fun RickAndMortyCharacterCard(
 
                     Text(
                         text = "First seen in:",
-                        style = MaterialTheme.typography.labelMedium,
+                        style = RickAndMortyTheme.typography.textMedium,
                         color = RickAndMortyTheme.colors.textSecondary
                     )
                     Text(
                         text = character.origin.name,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = RickAndMortyTheme.typography.textLarge,
                         color = RickAndMortyTheme.colors.textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
