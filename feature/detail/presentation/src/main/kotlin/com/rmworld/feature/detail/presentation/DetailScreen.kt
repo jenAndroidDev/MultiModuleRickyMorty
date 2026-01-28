@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -88,7 +89,7 @@ fun CharacterDetailContent(
         if (shouldLoadImage) {
             AsyncImage(
                 model = character?.image,
-                contentDescription = "Character Image",
+                contentDescription = stringResource(R.string.feature_detail_image_description),
                 modifier = imageModifier,
                 contentScale = ContentScale.Crop
             )
@@ -100,7 +101,7 @@ fun CharacterDetailContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = character?.name ?: "No Name Provided",
+            text = character?.name ?: stringResource(R.string.feature_detail_no_name_provided),
             fontWeight = FontWeight.Bold,
             color = RickAndMortyTheme.colors.textPrimary,
             style = RickAndMortyTheme.typography.textLarge
@@ -111,9 +112,9 @@ fun CharacterDetailContent(
             species = character?.species
         )
         Spacer(modifier = Modifier.height(16.dp))
-        RickyMortyCharacterInfoCard("Last known location:", character?.location?.name ?: "No Location Provided", isLoading)
+        RickyMortyCharacterInfoCard(stringResource(R.string.feature_detail_last_known_location), character?.location?.name ?: "No Location Provided", isLoading)
         Spacer(modifier = Modifier.height(12.dp))
-        RickyMortyCharacterInfoCard("First seen in:", character?.origin?.name ?: "No Origin Available", isLoading)
+        RickyMortyCharacterInfoCard(stringResource(R.string.feature_detail_first_seen_in), character?.origin?.name ?: "No Origin Available", isLoading)
     }
 }
 
@@ -123,7 +124,7 @@ fun RickyMortyCharacterStatus(
     species: String?
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        val displayStatus = status ?: "No Status Available"
+        val displayStatus = status ?: stringResource(R.string.feature_detail_no_status_available)
         val statusColor = when (displayStatus) {
             "Alive" -> Color.Green
             "Dead" -> Color.Red

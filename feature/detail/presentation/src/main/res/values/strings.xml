@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_detail_first_seen_in">First seen in:</string>
+    <string name="feature_detail_last_known_location"
+        >Last known location:</string>
+    <string name="feature_detail_no_name_provided">No Name Provided</string>
+    <string name="feature_detail_no_status_available">No  Status Available</string>
+    <string name="feature_detail_image_description">Rick and Morty Character Image</string>
+</resources>
