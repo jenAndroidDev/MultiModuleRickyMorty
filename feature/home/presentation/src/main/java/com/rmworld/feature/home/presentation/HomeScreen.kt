@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -203,7 +204,7 @@ private fun RickAndMortyCharacterCard(
                     Spacer(modifier = Modifier.weight(1f))
 
                     Text(
-                        text = "Last known location:",
+                        text = stringResource(R.string.feature_home_last_known_location),
                         style = RickAndMortyTheme.typography.textMedium,
                         color = Color.LightGray
                     )
@@ -218,7 +219,7 @@ private fun RickAndMortyCharacterCard(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "First seen in:",
+                        text = stringResource(R.string.feature_home_first_seen_in),
                         style = RickAndMortyTheme.typography.textMedium,
                         color = RickAndMortyTheme.colors.textSecondary
                     )

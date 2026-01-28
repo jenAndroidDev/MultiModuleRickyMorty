@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_home_last_known_location">Last known location:</string>
+    <string name="feature_home_first_seen_in">First Seen in:</string>
+</resources>
