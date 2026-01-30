@@ -2,6 +2,7 @@ package com.rmworld.feature.home.data.repository
 
 import com.rmworld.core.common.Result
 import com.rmworld.core.common.apiresult.NoInternetException
+import com.rmworld.core.common.paging.PagedData
 import com.rmworld.core.network.utls.NetworkResult
 import com.rmworld.feature.home.data.source.remote.HomeRemoteDataSource
 import com.rmworld.feature.home.domain.model.Character
@@ -13,14 +14,19 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val remoteDataSource: HomeRemoteDataSource
 ) : HomeRepository {
-    override fun getAllCharacterStream(): Flow<Result<List<Character>>> {
+    override fun getAllCharacterStream(): Flow<Result<PagedData<Character>>> {
         return remoteDataSource.getAllCharacters().map { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> Result.Loading
                 is NetworkResult.Success -> {
                     val domainCharacters =
                         networkResult.data?.results?.map { it.toCharacter() } ?: emptyList()
-                    Result.Success(domainCharacters)
+                    Result.Success(PagedData(
+                        data = domainCharacters,
+                        prevKey = null,
+                        nextKey = null,
+                        totalCount = domainCharacters.size
+                    ))
                 }
                 is NetworkResult.Error -> {
                     Result.Error(Exception(networkResult.message ?: "An unknown error occurred"))
