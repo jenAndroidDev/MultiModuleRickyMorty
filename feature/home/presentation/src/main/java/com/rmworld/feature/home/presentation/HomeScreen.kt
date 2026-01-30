@@ -26,12 +26,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListLayoutInfo
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,6 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import coil.compose.AsyncImage
+import com.rmworld.core.common.extensions.isScrollingDown
 import com.rmworld.core.common.paging.LoadState
 import com.rmworld.core.common.utils.CharacterConstants
 import com.rmworld.feature.home.domain.model.Character
@@ -88,6 +94,7 @@ fun HomeScreen(
 private fun RickyAndMortyCharacterContent(
     uiState: HomeUiState,
     isLoading: Boolean,
+    scrollState: LazyListState = rememberLazyListState(),
     action: (HomeUiAction)-> Unit = {}
 ){
     Box(
@@ -98,7 +105,17 @@ private fun RickyAndMortyCharacterContent(
         if (isLoading && uiState.data.isEmpty()) {
             RickyMortyCharacterLoadingState()
         } else if (uiState.data.isNotEmpty()) {
-            LazyColumn {
+            val lastVisibleState = remember { derivedStateOf { scrollState.layoutInfo.visibleItemsInfo.last().index } }
+            val visibleItemState = remember { derivedStateOf { scrollState.layoutInfo.visibleItemsInfo.size }}
+            val totalItemState = remember { derivedStateOf { scrollState.layoutInfo.totalItemsCount }}
+            if (scrollState.isScrollingDown()){
+                action.invoke(HomeUiAction.Scroll(
+                    lastVisibleItemPosition = lastVisibleState.value,
+                    totalItemCount = totalItemState.value,
+                    visibleItemCount = visibleItemState.value
+                ))
+            }
+            LazyColumn(state = scrollState) {
                 items(
                     count = uiState.data.size,
                     key = { index -> uiState.data[index].id }
@@ -269,7 +286,10 @@ private fun RickyMortyCharacterLoadingState() {
                             status = "Dead",
                             species = "Human",
                             location = Location(name = "unknown", url = ""),
-                            origin = Origin(name = "Vindicators 3: The Return of Worldender", url = ""),
+                            origin = Origin(
+                                name = "Vindicators 3: The Return of Worldender",
+                                url = ""
+                            ),
                             image = "",
                         ),
                         action = {},
@@ -280,4 +300,5 @@ private fun RickyMortyCharacterLoadingState() {
             }
         }
     }
+
 }
