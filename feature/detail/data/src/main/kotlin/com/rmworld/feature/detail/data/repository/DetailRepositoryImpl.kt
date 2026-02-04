@@ -24,8 +24,6 @@ class DetailRepositoryImpl @Inject constructor(
                 }
                 is NetworkResult.Success -> {
                     val characterDto = networkResult.data
-                    Log.d("Character", "getCharacterStream() called with: networkResult = $characterDto")
-
                     if (characterDto != null) {
                         Result.Success(characterDto.toCharacter())
                     } else {
