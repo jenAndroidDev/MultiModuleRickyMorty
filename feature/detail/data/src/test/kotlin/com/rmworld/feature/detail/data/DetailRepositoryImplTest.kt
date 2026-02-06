@@ -1,6 +1,7 @@
 package com.rmworld.feature.detail.data
 
-import androidx.activity.result.IntentSenderRequest
+import com.google.common.truth.Truth.assertThat
+import com.rmworld.core.common.Result as DomainResult
 import app.cash.turbine.test
 import com.rmworld.core.network.utls.NetworkResult
 import com.rmworld.core.testing.utils.MainDispatcherRule
@@ -48,6 +49,25 @@ class DetailRepositoryImplTest {
         }
         verify { remoteDataSource.getCharacterById(id = mockCharacterId) }
     }
+
+    @Test
+    fun repositoryReturnsError() = runTest{
+        every { remoteDataSource.getCharacterById(id = mockCharacterId) } returns flowOf(
+            NetworkResult.Error(message = mockErrorMsg, code = mockHttpErrorCode))
+
+        val testResults = repository.getCharacterStream(id = mockCharacterId)
+        testResults.test {
+            val result = awaitItem()
+            assertThat(result).isInstanceOf(DomainResult.Error::class.java)
+            val error = result as DomainResult.Error
+            assertThat(error.exception.message).isEqualTo(mockErrorMsg)
+            cancelAndIgnoreRemainingEvents()
+        }
+
+        verify { remoteDataSource.getCharacterById(id = mockCharacterId) }
+
+    }
+
 }
 private val mockCharacterId = 1
 
@@ -65,4 +85,7 @@ private val mockCharacterDto = Result(
     url = "https://rickandmortyapi.com/api/character/1",
     created = "2017-11-04T18:48:46.250Z"
 )
+
+private val mockErrorMsg = "Character Not Found"
+private val mockHttpErrorCode = 400
 
