@@ -1,0 +1,17 @@
+
+* @jenAndroidDev
+
+# App module
+/app/ @jenAndroidDev
+
+# Core module
+/core/ @jenAndroidDev
+
+# Feature modules
+/feature/ @jenAndroidDev
+
+# Build logic
+/build-logic/ @jenAndroidDev
+
+# Gradle configs
+*.gradle.kts @jenAndroidDev
