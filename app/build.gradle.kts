@@ -32,6 +32,9 @@ android {
     buildFeatures {
         compose = true
     }
+    lint {
+        abortOnError = true
+    }
 }
 
 dependencies {
@@ -57,6 +60,7 @@ dependencies {
 
     // projects core module
     implementation(projects.core.designsystem)
+    lintChecks(projects.lintchecks)
 
     // projects features
     implementation(projects.feature.home.presentation)

@@ -17,6 +17,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("lintLibs") {
+            from(files("gradle/lint-libs.versions.toml"))
+        }
+    }
 }
 
 rootProject.name = "MultiModuleRickyMorty"
@@ -26,6 +31,7 @@ includeBuild("build-logic")
 
 include(":app")
 include(":core")
+include("lintchecks")
 include(":core:network")
 include(":core:designsystem")
 include(":core:common")

@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RickAndMortyTheme {
+               println()
                 val appState = rememberRMWorldState()
                 RMWorldApp(appState, startDestination = HomeRoute::class)
             }
