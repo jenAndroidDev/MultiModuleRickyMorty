@@ -1,6 +1,8 @@
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.android.lint)
+
 }
 group = "com.rmworld.app.buildlogic"
 
@@ -20,6 +22,7 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    lintChecks(libs.androidx.lint.gradle)
 }
 
 gradlePlugin {
@@ -39,6 +42,10 @@ gradlePlugin {
         register("hilt"){
             id = libs.plugins.rmworld.hilt.get().pluginId
             implementationClass = "HiltConventionPlugin"
+        }
+        register("androidLint") {
+            id = libs.plugins.rmworld.lint.get().pluginId
+            implementationClass = "AndroidLintConventionPlugin"
         }
 
     }
