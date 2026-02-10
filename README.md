@@ -18,6 +18,7 @@
 * **Networking:** Retrofit 2,Kotlinx-Serialization
 * **Navigation:** Jetpack Compose Type Safe Navigation
 * **Unit Tests:** Junit 4,Turbine,Truth
+* **Lint Checks:** Lint
 
 ##Demo Video
 ![demo-2](https://github.com/user-attachments/assets/079a6909-69ff-41bb-8b1a-8047e7dc04a8)
