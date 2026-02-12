@@ -16,6 +16,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import net.bytebuddy.matcher.ElementMatchers.returns
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +34,20 @@ class DetailRepositoryImplTest {
     fun setup(){
         MockKAnnotations.init(this)
         repository = DetailRepositoryImpl(remoteDataSource)
+
+    }
+
+    @Test
+    fun repositoryReturnsLoading() = runTest {
+        every { remoteDataSource.getCharacterById(id = mockCharacterId) } returns flowOf(
+            NetworkResult.Loading())
+
+        val testResults = repository.getCharacterStream(id = mockCharacterId)
+        testResults.test {
+            val item = awaitItem()
+            assert(item is com.rmworld.core.common.Result.Loading)
+            cancelAndIgnoreRemainingEvents()
+        }
 
     }
 

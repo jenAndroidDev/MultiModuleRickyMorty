@@ -38,6 +38,23 @@ class HomeRepositoryImplTest {
     }
 
     @Test
+    fun repositoryReturnsLoading() = runTest {
+        every {
+            remoteDataSource.getAllCharacters()
+        } returns flowOf(NetworkResult.Loading())
+
+        val testResults = repository.getAllCharacterStream()
+
+        testResults.test {
+            val result = awaitItem()
+            assert(result is com.rmworld.core.common.Result.Loading)
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify { remoteDataSource.getAllCharacters() }
+
+    }
+
+    @Test
     fun repositoryReturnsListOfCharacters() = runTest {
         every { remoteDataSource.getAllCharacters() } returns flowOf(NetworkResult.Success(mockResponse, message = "Success"))
 
