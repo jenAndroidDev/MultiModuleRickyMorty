@@ -113,6 +113,7 @@ open class BaseRemoteDataSource (
         }*/
     }
 
+    @WorkerThread
     protected suspend fun <T>newSafeApiCall(
         call: suspend ()-> Response<T>
     ): NetworkResult<T>{
