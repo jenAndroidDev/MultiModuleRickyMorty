@@ -50,7 +50,11 @@ fun RickAndMortyTheme(
     }else{
         lightColorPalette
     }
-    ProvideRickAndMortyColors(colors, content = content)
+    val typoGraphy = typoGraphy
+    CompositionLocalProvider(LocalRickAndMortyColors provides colors,
+        LocalRickAndMortyTypography provides typoGraphy) {
+        content()
+    }
 
 }
 

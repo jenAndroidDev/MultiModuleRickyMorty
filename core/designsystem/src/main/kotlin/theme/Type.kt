@@ -37,3 +37,4 @@ private val fontFamily: FontFamily = FontFamily(
     Font(R.font.poppins_bold, FontWeight.Bold),
     Font(R.font.poppins_extrabold, FontWeight.ExtraBold)
 )
+val typoGraphy = RickyMortyAppTypoGraphy()
