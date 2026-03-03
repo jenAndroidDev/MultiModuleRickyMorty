@@ -16,4 +16,9 @@ dependencies{
     implementation(libs.logging.interceptor)
     implementation(libs.timber)
     implementation(libs.androidx.annotation.jvm)
+
+    testImplementation(libs.truth)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
