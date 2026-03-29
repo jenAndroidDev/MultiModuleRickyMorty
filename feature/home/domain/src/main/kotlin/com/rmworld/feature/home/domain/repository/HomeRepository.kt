@@ -6,5 +6,5 @@ import com.rmworld.feature.home.domain.model.Character
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    fun getAllCharacterStream(): Flow<Result<PagedData<Character>>>
+    fun getAllCharacterStream(pageNo: Int): Flow<Result<PagedData<Character>>>
 }

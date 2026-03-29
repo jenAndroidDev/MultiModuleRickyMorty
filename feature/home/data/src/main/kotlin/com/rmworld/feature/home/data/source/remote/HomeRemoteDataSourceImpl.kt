@@ -20,8 +20,8 @@ class HomeRemoteDataSourceImpl @Inject constructor(
      networkHelper: NetworkHelper,
     @Dispatcher(RMWorldDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ): HomeRemoteDataSource, BaseRemoteDataSource(networkHelper) {
-    override fun getAllCharacters(): Flow<NetworkResult<CharacterResponseModel>> = flow{
+    override fun getAllCharacters(pageNo: Int): Flow<NetworkResult<CharacterResponseModel>> = flow{
         emit(NetworkResult.Loading())
-        emit(safeApiCall { apiService.getAllCharacters() })
+        emit(safeApiCall { apiService.getAllCharacters(pageNo) })
     }.flowOn(ioDispatcher)
 }

@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetAllCharactersUseCase @Inject constructor (
     private val repository: HomeRepository
 ){
-    suspend operator fun invoke() = repository.getAllCharacterStream()
+     operator fun invoke(pageNo: Int) = repository.getAllCharacterStream(pageNo)
 
 }

@@ -14,17 +14,19 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val remoteDataSource: HomeRemoteDataSource
 ) : HomeRepository {
-    override fun getAllCharacterStream(): Flow<Result<PagedData<Character>>> {
-        return remoteDataSource.getAllCharacters().map { networkResult ->
+    override fun getAllCharacterStream(pageNo: Int): Flow<Result<PagedData<Character>>> {
+        return remoteDataSource.getAllCharacters(pageNo = pageNo).map { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> Result.Loading
                 is NetworkResult.Success -> {
                     val domainCharacters =
                         networkResult.data?.results?.map { it.toCharacter() } ?: emptyList()
+                    val nextPageUrl = networkResult.data?.info?.next
+                    val nextKey = nextPageUrl?.substringAfterLast("page=")
                     Result.Success(PagedData(
                         data = domainCharacters,
                         prevKey = null,
-                        nextKey = null,
+                        nextKey = nextKey,
                         totalCount = domainCharacters.size
                     ))
                 }
