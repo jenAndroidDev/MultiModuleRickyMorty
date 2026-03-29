@@ -105,16 +105,7 @@ private fun RickyAndMortyCharacterContent(
         if (isLoading && uiState.data.isEmpty()) {
             RickyMortyCharacterLoadingState()
         } else if (uiState.data.isNotEmpty()) {
-            val lastVisibleState = remember { derivedStateOf { scrollState.layoutInfo.visibleItemsInfo.last().index } }
-            val visibleItemState = remember { derivedStateOf { scrollState.layoutInfo.visibleItemsInfo.size }}
-            val totalItemState = remember { derivedStateOf { scrollState.layoutInfo.totalItemsCount }}
-            if (scrollState.isScrollingDown()){
-                action.invoke(HomeUiAction.Scroll(
-                    lastVisibleItemPosition = lastVisibleState.value,
-                    totalItemCount = totalItemState.value,
-                    visibleItemCount = visibleItemState.value
-                ))
-            }
+            UiScrollEffect(scrollState = scrollState, action = action)
             LazyColumn(state = scrollState) {
                 items(
                     count = uiState.data.size,
@@ -252,15 +243,7 @@ private fun RickAndMortyCharacterCard(
         }
     }
 
-@Composable
-fun UiTextErrorEffect(uiState: HomeUiState){
-    val context = LocalContext.current
-    LaunchedEffect(uiState.uiText) {
-        uiState.uiText?.let { uiText ->
-            Toast.makeText(context,uiText.asString(context), Toast.LENGTH_LONG).show()
-        }
-    }
-}
+
 
 @Composable
 private fun RickyMortyCharacterLoadingState() {
@@ -301,4 +284,41 @@ private fun RickyMortyCharacterLoadingState() {
         }
     }
 
+}
+
+@Composable
+fun UiTextErrorEffect(uiState: HomeUiState){
+    val context = LocalContext.current
+    LaunchedEffect(uiState.uiText) {
+        uiState.uiText?.let { uiText ->
+            Toast.makeText(context,uiText.asString(context), Toast.LENGTH_LONG).show()
+        }
+    }
+}
+
+@Composable
+fun UiScrollEffect(scrollState: LazyListState, action: (HomeUiAction) -> Unit){
+    val lastVisibleIndex by remember {
+        derivedStateOf {
+            scrollState.layoutInfo.visibleItemsInfo
+                .lastOrNull()?.index ?: 0
+        }
+    }
+    val visibleItemCount by remember {
+        derivedStateOf {
+            scrollState.layoutInfo.visibleItemsInfo.size
+        }
+    }
+    val totalItemCount by remember {
+        derivedStateOf { scrollState.layoutInfo.totalItemsCount
+        }
+    }
+    LaunchedEffect(lastVisibleIndex) {
+        if (totalItemCount == 0 || visibleItemCount == 0) return@LaunchedEffect
+        action.invoke(HomeUiAction.Scroll(
+            lastVisibleItemPosition = lastVisibleIndex,
+            totalItemCount = totalItemCount,
+            visibleItemCount = visibleItemCount
+        ))
+    }
 }
