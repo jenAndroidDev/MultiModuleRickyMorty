@@ -22,7 +22,7 @@ class DetailRemoteDataSourceImpl @Inject constructor(
 ) : DetailRemoteDataSource, BaseRemoteDataSource(networkHelper) {
     override fun getCharacterById(id: Int): Flow<NetworkResult<Result>> = flow{
         emit(NetworkResult.Loading())
-        emit(newSafeApiCall { apiService.getCharacterById(id) })
+        emit(safeApiCall { apiService.getCharacterById(id) })
     }.flowOn(ioDispatcher)
 
 
