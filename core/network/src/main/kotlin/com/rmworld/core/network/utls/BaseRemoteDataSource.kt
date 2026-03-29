@@ -22,31 +22,25 @@ open class BaseRemoteDataSource (
     private val logTag: String = BaseRemoteDataSource::class.java.simpleName
 
     @WorkerThread
-    protected suspend fun <T> safeApiCall(call: suspend () -> Response<T>): NetworkResult<T> {
-        return when {
-            netWorkHelper.checkForInternet() -> {
-                try {
-                    call.invoke().let { response: Response<T> ->
-                        Timber.d("Response: body ${response.body()} errorBody ${response.errorBody()} raw $response")
-                        if (response.isSuccessful) {
-                            response.body()?.let {
-                                println("response_success>>$it")
-                                NetworkResult.Success(
-                                    it,
-                                    response.message(),
-                                    code = response.code()
-                                )
-                            } ?: error("Success. But no data")
-                        } else {
-                            apiErrorHandler(response)
-                        }
-                    }
-                } catch (e: Exception) {
-                    NetworkResult.Error(e.toString(), null)
-                }
+    protected suspend fun <T> safeApiCall(
+        call: suspend () -> Response<T>
+    ): NetworkResult<T> {
+        if (!netWorkHelper.checkForInternet()) {
+            return NetworkResult.NoInternet("Unable to connect to the internet")
+        }
+        return try {
+            val response = call()
+            Timber.d("Response: body=${response.body()} code=${response.code()}")
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    NetworkResult.Success(body, response.message(), code = response.code())
+                } ?: NetworkResult.Error("Success but no data", code = response.code())
+            } else {
+                apiErrorHandler(response)
             }
-
-            else -> NetworkResult.NoInternet("Unable to connect to the internet", null)
+        }catch (e: Exception) {
+            Timber.e(e, "API call failed")
+            NetworkResult.Error(e.message ?: "Unknown error")
         }
     }
 
@@ -113,6 +107,11 @@ open class BaseRemoteDataSource (
         }*/
     }
 
+    /*
+   1 Reverting this back to safe api call pattern as runcatching
+   in suspend functions might not cancel the  coroutine jobs
+    * https://github.com/Kotlin/kotlinx.coroutines/issues/1814
+    */
     @WorkerThread
     protected suspend fun <T>newSafeApiCall(
         call: suspend ()-> Response<T>
