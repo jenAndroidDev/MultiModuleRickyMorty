@@ -22,7 +22,7 @@ class ApiServiceFactory @Inject constructor(
 
         }
     }
-
+    //consider creating retrofit instances for different service base urls
     fun <T> create(
         serviceType: Class<T>,
         baseUrl: String,
@@ -38,5 +38,12 @@ class ApiServiceFactory @Inject constructor(
             .callFactory(TimeoutCallFactory(httpClient))
             .build()
             .create(serviceType)
+    }
+}
+class NewApiServiceFactory(
+    val retrofit: Retrofit
+){
+    fun <T> create(serviceClass: Class<T>):T{
+        return retrofit.create(serviceClass)
     }
 }
