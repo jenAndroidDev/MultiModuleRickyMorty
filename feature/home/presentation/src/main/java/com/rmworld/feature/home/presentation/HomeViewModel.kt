@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -46,8 +47,10 @@ class HomeViewModel  @Inject constructor(
     val action:(HomeUiAction)-> Unit
     init {
         scrollState.distinctUntilChanged()
+            .filterNot { uiState.value.loadStates.append is LoadState.Loading }
             .onEach {
                 if (it.shouldFetchMore && !endOfPagination){
+                    Log.d(Tag, "pagination...${it}")
                     createPagedRequest(shouldRefresh = false)
                 }
             }.launchIn(viewModelScope)
@@ -102,28 +105,28 @@ class HomeViewModel  @Inject constructor(
             LoadType.APPEND
         }
         viewModelScope.launch {
-            useCase.invoke().collect{result->
+            useCase.invoke(pagedRequest.key!!).collect{result->
                 when(result){
                 is Result.Loading -> {
                     setLoading(loadType, LoadState.Loading())
-                    Log.d("Success", "getAllCharacters() called with: result = $result")
+                    //Log.d(Tag, "getAllCharacters() called with: result = $result")
                 }
                 is Result.Success -> {
-                    Log.d("Success", "getAllCharacters() called with: result = $result")
+                    Log.d(Tag, "getAllCharacters() called with: result = ${result.data.nextKey}")
                     val tempList = uiState.value.data.toMutableList()
                     tempList.addAll(result.data.data)
                     _uiState.update {
                         it.copy(
-                            data = tempList
+                            data = tempList,
                         )
                     }
-                    endOfPagination = if (result.data.data.isEmpty()){
+                    endOfPagination = if (result.data.nextKey!=null){
                         page++
-                        true
-                    }else{
-
                         false
+                    }else{
+                        true
                     }
+                    Log.d(Tag,endOfPagination.toString())
                     setLoading(loadType, LoadState.NotLoading.Complete)
                 }
                 is Result.Error -> {
@@ -134,7 +137,7 @@ class HomeViewModel  @Inject constructor(
                         )
                     }
                     setLoading(loadType, LoadState.Error(result.exception))
-                    Log.d("Success", "getAllCharacters() called with: result = ${result.exception}")
+                    Log.d(Tag, "getAllCharacters() called with: result = ${result.exception}")
                 }
                 }
             }
@@ -143,9 +146,9 @@ class HomeViewModel  @Inject constructor(
     private fun setLoading(
         loadType: LoadType,
         loadState: LoadState
-    ){
+    ) {
         val newLoadState = uiState.value.loadStates
-            .modifyState(loadType,loadState)
+            .modifyState(loadType, loadState)
 
         this._uiState.update {
             it.copy(
@@ -154,8 +157,6 @@ class HomeViewModel  @Inject constructor(
             )
         }
     }
-
-
 }
 
 data class HomeUiState(
@@ -164,8 +165,7 @@ data class HomeUiState(
     val data: List<Character> = emptyList(),
     val shouldNavToDetailScreen: Boolean  = false,
     val selectedId:Int = 0,
-    val uiText: UiText?=null
-
+    val uiText: UiText?=null,
 )
 sealed interface HomeUiAction{
     data class NavigateToDetailScreen(val id: Int): HomeUiAction
@@ -176,8 +176,8 @@ sealed interface HomeUiAction{
         val totalItemCount: Int
     ): HomeUiAction
 }
-private const val LOAD_SIZE = 10
-private const val DEFAULT_VISIBLE_THRESHOLD = 10
+private const val LOAD_SIZE = 20
+private const val DEFAULT_VISIBLE_THRESHOLD = 5
 
 private val HomeUiAction.Scroll.shouldFetchMore: Boolean
     get() =  visibleItemCount+lastVisibleItemPosition+ DEFAULT_VISIBLE_THRESHOLD >=totalItemCount
