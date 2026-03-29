@@ -40,25 +40,25 @@ class HomeRepositoryImplTest {
     @Test
     fun repositoryReturnsLoading() = runTest {
         every {
-            remoteDataSource.getAllCharacters()
+            remoteDataSource.getAllCharacters(mockPageNo)
         } returns flowOf(NetworkResult.Loading())
 
-        val testResults = repository.getAllCharacterStream()
+        val testResults = repository.getAllCharacterStream(mockPageNo)
 
         testResults.test {
             val result = awaitItem()
             assert(result is com.rmworld.core.common.Result.Loading)
             cancelAndIgnoreRemainingEvents()
         }
-        verify { remoteDataSource.getAllCharacters() }
+        verify { remoteDataSource.getAllCharacters(mockPageNo) }
 
     }
 
     @Test
     fun repositoryReturnsListOfCharacters() = runTest {
-        every { remoteDataSource.getAllCharacters() } returns flowOf(NetworkResult.Success(mockResponse, message = "Success"))
+        every { remoteDataSource.getAllCharacters(mockPageNo) } returns flowOf(NetworkResult.Success(mockResponse, message = "Success"))
 
-        val testResults = repository.getAllCharacterStream()
+        val testResults = repository.getAllCharacterStream(mockPageNo)
 
         testResults.test {
             val result = awaitItem()
@@ -67,18 +67,18 @@ class HomeRepositoryImplTest {
         }
 
         verify {
-            remoteDataSource.getAllCharacters()
+            remoteDataSource.getAllCharacters(mockPageNo)
         }
     }
     @Test
     fun repositoryReturnsError() = runTest {
         every {
-            remoteDataSource.getAllCharacters()
+            remoteDataSource.getAllCharacters(mockPageNo)
         } returns flowOf(NetworkResult.Error(
             message = mockErrorMsg,
             code = mockHttpErrorCode
         ))
-        val testResults = repository.getAllCharacterStream()
+        val testResults = repository.getAllCharacterStream(mockPageNo)
         testResults.test {
             val result =awaitItem()
             assertThat(result).isInstanceOf(DomainResult.Error::class.java)
@@ -86,7 +86,7 @@ class HomeRepositoryImplTest {
             assertThat(error.exception.message).isEqualTo(mockErrorMsg)
             cancelAndIgnoreRemainingEvents()
         }
-        verify { remoteDataSource.getAllCharacters() }
+        verify { remoteDataSource.getAllCharacters(mockPageNo) }
 
     }
 }
@@ -111,3 +111,4 @@ private val mockResponse = CharacterResponseModel(
 )
 private val mockErrorMsg = "Characters Not Found"
 private val mockHttpErrorCode = 400
+private val mockPageNo  = 1
