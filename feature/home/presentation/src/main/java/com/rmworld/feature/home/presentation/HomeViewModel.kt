@@ -121,13 +121,16 @@ class HomeViewModel  @Inject constructor(
                         )
                     }
                     endOfPagination = if (result.data.nextKey!=null){
+                        setLoading(loadType, LoadState.NotLoading.InComplete)
                         page++
                         false
                     }else{
+                        setLoading(loadType,LoadState.NotLoading.Complete)
                         true
                     }
+
                     Log.d(Tag,endOfPagination.toString())
-                    setLoading(loadType, LoadState.NotLoading.Complete)
+
                 }
                 is Result.Error -> {
                     val uiText = result.exception.toUiText()

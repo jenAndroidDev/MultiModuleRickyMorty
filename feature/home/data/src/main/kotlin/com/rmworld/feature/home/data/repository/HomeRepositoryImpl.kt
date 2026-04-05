@@ -7,6 +7,7 @@ import com.rmworld.core.network.utls.NetworkResult
 import com.rmworld.feature.home.data.source.remote.HomeRemoteDataSource
 import com.rmworld.feature.home.domain.model.Character
 import com.rmworld.feature.home.domain.repository.HomeRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class HomeRepositoryImpl @Inject constructor(
                         networkResult.data?.results?.map { it.toCharacter() } ?: emptyList()
                     val nextPageUrl = networkResult.data?.info?.next
                     val nextKey = nextPageUrl?.substringAfterLast("page=")
+                    if (pageNo>1){
+                        delay(2000)
+                    }
                     Result.Success(PagedData(
                         data = domainCharacters,
                         prevKey = null,
