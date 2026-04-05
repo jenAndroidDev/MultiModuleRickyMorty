@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalSharedTransitionApi::class)
 package com.rmworld.feature.home.presentation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -28,6 +29,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +55,7 @@ import com.rmworld.feature.home.domain.model.Location
 import com.rmworld.feature.home.domain.model.Origin
 import components.shimmer
 import extensions.sharedElement
+import theme.LocalSharedTransitionScope
 import theme.RickAndMortyTheme
 
 @Composable
@@ -66,7 +69,7 @@ internal fun HomeRoute(
       onCharacterClicked.invoke(characterId)
     }
 }
-
+//Techdebt pass only the uiState
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
@@ -80,13 +83,23 @@ fun HomeScreen(
     }
     UiTextErrorEffect(feedState)
     val isLoading = feedState.loadState is LoadState.Loading
-    RickyAndMortyCharacterContent(uiState = feedState, isLoading = isLoading, action = action)
+    val isFooterLoading = feedState.loadStates.append is LoadState.Loading
+    Log.d(
+        "HomeScreen",
+        "HomeScreen() called with: viewModel = $isFooterLoading"
+    )
+    RickyAndMortyCharacterContent(
+        uiState = feedState,
+        isLoading = isLoading,
+        action = action,
+        isFooterLoading = isFooterLoading)
 }
 
 @Composable
 private fun RickyAndMortyCharacterContent(
     uiState: HomeUiState,
     isLoading: Boolean,
+    isFooterLoading: Boolean,
     scrollState: LazyListState = rememberLazyListState(),
     action: (HomeUiAction)-> Unit = {}
 ){
@@ -98,7 +111,7 @@ private fun RickyAndMortyCharacterContent(
         if (isLoading && uiState.data.isEmpty()) {
             RickyMortyCharacterLoadingState()
         } else if (uiState.data.isNotEmpty()) {
-            UiScrollEffect(scrollState = scrollState, action = action)
+            ScrollPaginationEffect(scrollState = scrollState, action = action)
             LazyColumn(state = scrollState) {
                 items(
                     count = uiState.data.size,
@@ -125,6 +138,22 @@ private fun RickyAndMortyCharacterContent(
                                 isLoading = false
                             )
                             Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                }
+                if (isFooterLoading) {
+                    item(key = "footer_loading_indicator") {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(80.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = RickAndMortyTheme.colors.textSecondary,
+                                strokeWidth = 4.dp,
+                                modifier = Modifier.size(32.dp)
+                            )
                         }
                     }
                 }
@@ -290,7 +319,7 @@ fun UiTextErrorEffect(uiState: HomeUiState){
 }
 
 @Composable
-fun UiScrollEffect(scrollState: LazyListState, action: (HomeUiAction) -> Unit){
+fun ScrollPaginationEffect(scrollState: LazyListState, action: (HomeUiAction) -> Unit){
     val lastVisibleIndex by remember {
         derivedStateOf {
             scrollState.layoutInfo.visibleItemsInfo
